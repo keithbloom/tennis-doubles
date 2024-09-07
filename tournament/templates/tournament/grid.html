@@ -1,51 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tennis Tournament</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4">
-        <h1 class="text-3xl font-bold text-center my-8">Tennis Doubles Tournament</h1>
-        {% for data in group_data %}
-            <div class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">{{ data.group.name }}</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full bg-white shadow-md rounded">
-                        <thead>
-                            <tr>
-                                <th class="p-3 text-left">Team</th>
-                                {% for team in data.teams %}
-                                    <th class="p-3 text-left">{{ team }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in data.match_grid %}
-                            {% with name=row|first %}
-                            {% with results=row|slice:"1:" %}
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto px-4">
+    <h1 class="text-3xl font-bold text-center my-8">Tennis Doubles Tournament</h1>
+    {% for data in group_data %}
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">{{ data.group.name }}</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full bg-white shadow-md rounded">
+                <thead>
+                    <tr>
+                        <th class="p-3 text-left">Team</th>
+                        {% for team in data.teams %}
+                        <th class="p-3 text-left">{{ team }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in data.match_grid %}
+                    {% with name=row|first %}
+                    {% with results=row|slice:"1:" %}
 
-                            <tr>
-                                    <td class="p-3 font-medium">{{ name }}</td>
+                    <tr>
+                        <td class="p-3 font-medium">{{ name }}</td>
 
-                                    {% for cell in results%}
-                                        <td class="p-3 {% if cell == None %}bg-gray-200{% endif %}">
-                                            {% if cell != None %}{{ cell }}{% endif %}
-                                        </td>
-                                    {% endfor %}    
+                        {% for cell in results%}
+                        <td class="p-3 {% if cell == None %}bg-gray-200{% endif %}">
+                            {% if cell != None %}{{ cell }}{% endif %}
+                        </td>
+                        {% endfor %}
 
-                                </tr>
-                                {% endwith %}
-                                {% endwith %}
-                                {% endfor %}
+                    </tr>
+                    {% endwith %}
+                    {% endwith %}
+                    {% endfor %}
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</body>
-</html>
+    {% endfor %}
+</div>
+{% endblock %}
