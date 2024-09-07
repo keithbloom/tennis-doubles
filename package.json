@@ -1,0 +1,15 @@
+{
+  "name": "tennis-doubles",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./tournament/static/css/tailwind.css -o ./tournament/static/css/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}

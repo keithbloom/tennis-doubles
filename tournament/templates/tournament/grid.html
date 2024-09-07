@@ -19,21 +19,17 @@
                     {% for row in data.match_grid %}
                     {% with name=row|first %}
                     {% with results=row|slice:"1:" %}
-
                     <tr>
                         <td class="p-3 font-medium">{{ name }}</td>
-
                         {% for cell in results%}
                         <td class="p-3 {% if cell == None %}bg-gray-200{% endif %}">
                             {% if cell != None %}{{ cell }}{% endif %}
                         </td>
                         {% endfor %}
-
                     </tr>
                     {% endwith %}
                     {% endwith %}
                     {% endfor %}
-
                 </tbody>
             </table>
         </div>
