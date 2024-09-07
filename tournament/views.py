@@ -17,7 +17,7 @@ def tournament_grid(request):
         )
         match_grid = []
         for team1 in teams:
-            row = [str(team1)]
+            row = [team1]
             for team2 in teams:
                 if team1 == team2:
                     row.append(None)  # This will be grayed out in the template
@@ -38,7 +38,7 @@ def tournament_grid(request):
 
         group_data.append({"group": group, "teams": teams, "match_grid": match_grid})
 
-    logger.info(f"Match grid data: {match_grid}")
+    logger.info(f"Match group data: {group_data}")
 
     context = {"group_data": group_data}
     return render(request, "tournament/grid.html", context)

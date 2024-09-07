@@ -1,26 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
 {% block content %}
 <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-bold text-center my-8">Tennis Doubles Tournament</h1>
+    <header class="relative h-32 sm:h-48 md:h-64 w-full bg-cover bg-center" style="background-image: url({% static 'img/tennis-background.jpg' %});">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="relative z-10 flex h-full items-center justify-center px-4">
+            <h1 class="font-cowboys text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white font-bold text-left">
+                The Racketeers & Serve-ivors
+            </h1>
+        </div>
+    </header>
     {% for data in group_data %}
-    <div class="mb-8">
+    <div class="mb-8 p-4">
         <h2 class="text-2xl font-bold mb-4">{{ data.group.name }}</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full bg-white shadow-md rounded">
+        <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+            <table class="w-full border-collapse">
                 <thead>
                     <tr>
-                        <th class="p-3 text-left">Team</th>
+                        <th class="sticky left-0 z-10 p-3 bg-white text-left"></th>
                         {% for team in data.teams %}
-                        <th class="p-3 text-left">{{ team }}</th>
+                        {% with index=forloop.counter0 %}
+                        <th class="p-3 text-left">{% team_name team index %}</th>
+                        {% endwith %}
                         {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
                     {% for row in data.match_grid %}
-                    {% with name=row|first %}
+                    {% with index=forloop.counter0 name=row|first %}
                     {% with results=row|slice:"1:" %}
                     <tr>
-                        <td class="p-3 font-medium">{{ name }}</td>
+                        <td class="sticky left-0 z-10 p-3 bg-white font-medium">{% team_name team=name index=index %}</td>
                         {% for cell in results%}
                         <td class="p-3 {% if cell == None %}bg-gray-200{% endif %}">
                             {% if cell != None %}{{ cell }}{% endif %}
