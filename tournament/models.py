@@ -25,9 +25,11 @@ class Team(models.Model):
         Player, related_name="teams_as_player2", on_delete=models.CASCADE
     )
     group = models.ForeignKey(Group, related_name="teams", on_delete=models.CASCADE)
+    rank = models.IntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = ["player1", "player2", "group"]
+        ordering = ["group", "rank"]
 
     def clean(self):
         if self.player1 == self.player2:

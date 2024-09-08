@@ -1,0 +1,1212 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-09-07T10:05:38.268Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Racketeers",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-09-07T10:05:47.972Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Serve - Ivers",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-09-07T10:06:00.349Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Emma Bloom",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-09-07T10:06:07.396Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Kate Person",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-09-07T10:06:16.738Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Audrey Person",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-09-07T10:06:22.766Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Lucy Person",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-09-07T10:22:46.373Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "3",
+    "object_repr": "Audrey Franks",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-09-07T10:22:56.806Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "4",
+    "object_repr": "Lucy Morris",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-09-07T10:23:04.522Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Kate Lewis",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-09-07T10:27:41.263Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Bloom/Lewis",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-09-07T10:29:28.016Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Audrey/Lucy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-09-07T10:29:52.942Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Emma/Kate vs Audrey/Lucy",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-09-07T10:46:49.054Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Serve-ivors",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-09-07T12:55:47.529Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "5",
+    "object_repr": "Debbie Stephenson",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-09-07T12:56:09.053Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "6",
+    "object_repr": "Rikke Kerler",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-09-07T12:56:23.441Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Debbie/Rikke",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-09-07T14:34:47.860Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Emma/Kate vs Debbie/Rikke",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-09-07T14:35:10.251Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Emma/Kate vs Debbie/Rikke",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Set2 team2\", \"Set3 team1\", \"Set3 team2\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-09-07T14:44:39.330Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "7",
+    "object_repr": "Jackie Engelberg",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-09-07T14:44:52.889Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "8",
+    "object_repr": "Carmel O’Dell",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2024-09-07T14:45:15.698Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "9",
+    "object_repr": "Lizzy Goshtai",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2024-09-07T14:45:35.525Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "10",
+    "object_repr": "Katia Morris",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2024-09-07T14:46:01.283Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "11",
+    "object_repr": "Leila Farahi",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2024-09-07T14:46:12.309Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "12",
+    "object_repr": "Lauren Sandford",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2024-09-07T14:46:24.631Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "13",
+    "object_repr": "Sandford Spenner",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2024-09-07T14:46:34.121Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "14",
+    "object_repr": "Kate Henry",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2024-09-07T14:46:53.484Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Jackie/Carmel",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2024-09-07T14:47:05.949Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "Lizzy/Katia",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2024-09-07T14:47:25.142Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "6",
+    "object_repr": "Leila/Lauren",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2024-09-07T14:47:46.090Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "7",
+    "object_repr": "Sandford/Kate",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2024-09-07T18:02:11.487Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "13",
+    "object_repr": "Nat Spenner",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2024-09-08T10:01:37.742Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Jackie/Carmel",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2024-09-08T10:04:33.272Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Audrey/Lucy",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2024-09-08T10:04:42.538Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "Lizzy/Katia",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2024-09-08T10:04:57.191Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Kate/Emma",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Player1\", \"Player2\", \"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2024-09-08T10:05:07.641Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "6",
+    "object_repr": "Leila/Lauren",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2024-09-08T10:05:15.695Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Debbie/Rikke",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2024-09-08T10:05:21.952Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "7",
+    "object_repr": "Nat/Kate",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2024-09-08T10:12:28.609Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "15",
+    "object_repr": "Lucy Smith",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 40,
+  "fields": {
+    "action_time": "2024-09-08T10:12:39.891Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "16",
+    "object_repr": "Susan Blaylock",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 41,
+  "fields": {
+    "action_time": "2024-09-08T10:12:53.564Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "17",
+    "object_repr": "Amanda Atkins",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 42,
+  "fields": {
+    "action_time": "2024-09-08T10:13:08.170Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "18",
+    "object_repr": "Sam Wilson",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 43,
+  "fields": {
+    "action_time": "2024-09-08T10:13:19.841Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "19",
+    "object_repr": "Ainhoa Tyrell",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 44,
+  "fields": {
+    "action_time": "2024-09-08T10:13:34.998Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "20",
+    "object_repr": "Hannah Penerup",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 45,
+  "fields": {
+    "action_time": "2024-09-08T10:13:41.723Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "21",
+    "object_repr": "Jelena Benson",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 46,
+  "fields": {
+    "action_time": "2024-09-08T10:13:52.413Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "22",
+    "object_repr": "Helen Shuttleworth",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 47,
+  "fields": {
+    "action_time": "2024-09-08T10:14:03.438Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "23",
+    "object_repr": "Karen Hasler",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 48,
+  "fields": {
+    "action_time": "2024-09-08T10:14:13.780Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "24",
+    "object_repr": "Dani Dani",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 49,
+  "fields": {
+    "action_time": "2024-09-08T10:14:25.453Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "25",
+    "object_repr": "Sharon Hedges",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 50,
+  "fields": {
+    "action_time": "2024-09-08T10:14:35.758Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "26",
+    "object_repr": "Lindsey Tydeman",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 51,
+  "fields": {
+    "action_time": "2024-09-08T10:14:49.866Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "27",
+    "object_repr": "Sam Davey",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 52,
+  "fields": {
+    "action_time": "2024-09-08T10:14:57.034Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "28",
+    "object_repr": "Chris Beevers",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 53,
+  "fields": {
+    "action_time": "2024-09-08T10:15:22.368Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "8",
+    "object_repr": "Lucy/Susan",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 54,
+  "fields": {
+    "action_time": "2024-09-08T10:17:25.035Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "Amanda/Sam",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 55,
+  "fields": {
+    "action_time": "2024-09-08T10:17:41.567Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "10",
+    "object_repr": "Ainhoa/Hannah",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 56,
+  "fields": {
+    "action_time": "2024-09-08T10:18:00.625Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "11",
+    "object_repr": "Jelena/Helen",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 57,
+  "fields": {
+    "action_time": "2024-09-08T10:18:15.851Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "12",
+    "object_repr": "Karen/Dani",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 58,
+  "fields": {
+    "action_time": "2024-09-08T10:18:28.691Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "13",
+    "object_repr": "Sharon/Lindsey",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 59,
+  "fields": {
+    "action_time": "2024-09-08T10:18:39.701Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "14",
+    "object_repr": "Sam/Chris",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 60,
+  "fields": {
+    "action_time": "2024-09-08T10:18:51.337Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "Amanda/Sam",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Rank\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 61,
+  "fields": {
+    "action_time": "2024-09-08T10:19:12.333Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Kate/Emma vs Debbie/Rikke",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 62,
+  "fields": {
+    "action_time": "2024-09-08T10:19:12.333Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "1",
+    "object_repr": "Kate/Emma vs Audrey/Lucy",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$FinDycVh0bCHsIicxFTuMW$i/7MiGxnZAu3GOzOEUhclVxZa+dyUzVYMKImNITXg7c=",
+    "last_login": "2024-09-07T10:05:23.161Z",
+    "is_superuser": true,
+    "username": "keith",
+    "first_name": "",
+    "last_name": "",
+    "email": "keith.bloom@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-09-07T10:04:15.224Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "369yggnf5pl218lyr0kj4okswq3eu13o",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pCBQkGX7nsGMjCDVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwk7gIJU6_W8T04LoDumO9NZlaXZc5yl2RB-1yasTP6-H-HRTs5Vvn4ZzBeEhkCUBnnYCNQ0uO4wjoh-RzNgM6bzkpPYJSbK1iYCTI2ov3B-bBN-0:1smsJn:ujVhIyvLZEaMfHhh7-pspIln-W_T8LCEGFynTt4LFVs",
+    "expire_date": "2024-09-21T10:05:23.171Z"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 1,
+  "fields": {
+    "first_name": "Emma",
+    "last_name": "Bloom"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 2,
+  "fields": {
+    "first_name": "Kate",
+    "last_name": "Lewis"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 3,
+  "fields": {
+    "first_name": "Audrey",
+    "last_name": "Franks"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 4,
+  "fields": {
+    "first_name": "Lucy",
+    "last_name": "Morris"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 5,
+  "fields": {
+    "first_name": "Debbie",
+    "last_name": "Stephenson"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 6,
+  "fields": {
+    "first_name": "Rikke",
+    "last_name": "Kerler"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 7,
+  "fields": {
+    "first_name": "Jackie",
+    "last_name": "Engelberg"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 8,
+  "fields": {
+    "first_name": "Carmel",
+    "last_name": "O’Dell"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 9,
+  "fields": {
+    "first_name": "Lizzy",
+    "last_name": "Goshtai"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 10,
+  "fields": {
+    "first_name": "Katia",
+    "last_name": "Morris"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 11,
+  "fields": {
+    "first_name": "Leila",
+    "last_name": "Farahi"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 12,
+  "fields": {
+    "first_name": "Lauren",
+    "last_name": "Sandford"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 13,
+  "fields": {
+    "first_name": "Nat",
+    "last_name": "Spenner"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 14,
+  "fields": {
+    "first_name": "Kate",
+    "last_name": "Henry"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 15,
+  "fields": {
+    "first_name": "Lucy",
+    "last_name": "Smith"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 16,
+  "fields": {
+    "first_name": "Susan",
+    "last_name": "Blaylock"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 17,
+  "fields": {
+    "first_name": "Amanda",
+    "last_name": "Atkins"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 18,
+  "fields": {
+    "first_name": "Sam",
+    "last_name": "Wilson"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 19,
+  "fields": {
+    "first_name": "Ainhoa",
+    "last_name": "Tyrell"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 20,
+  "fields": {
+    "first_name": "Hannah",
+    "last_name": "Penerup"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 21,
+  "fields": {
+    "first_name": "Jelena",
+    "last_name": "Benson"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 22,
+  "fields": {
+    "first_name": "Helen",
+    "last_name": "Shuttleworth"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 23,
+  "fields": {
+    "first_name": "Karen",
+    "last_name": "Hasler"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 24,
+  "fields": {
+    "first_name": "Dani",
+    "last_name": "Dani"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 25,
+  "fields": {
+    "first_name": "Sharon",
+    "last_name": "Hedges"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 26,
+  "fields": {
+    "first_name": "Lindsey",
+    "last_name": "Tydeman"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 27,
+  "fields": {
+    "first_name": "Sam",
+    "last_name": "Davey"
+  }
+},
+{
+  "model": "tournament.player",
+  "pk": 28,
+  "fields": {
+    "first_name": "Chris",
+    "last_name": "Beevers"
+  }
+},
+{
+  "model": "tournament.group",
+  "pk": 1,
+  "fields": {
+    "name": "Racketeers"
+  }
+},
+{
+  "model": "tournament.group",
+  "pk": 2,
+  "fields": {
+    "name": "Serve-ivors"
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 1,
+  "fields": {
+    "player1": 2,
+    "player2": 1,
+    "group": 2,
+    "rank": 4
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 2,
+  "fields": {
+    "player1": 3,
+    "player2": 4,
+    "group": 2,
+    "rank": 2
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 3,
+  "fields": {
+    "player1": 5,
+    "player2": 6,
+    "group": 2,
+    "rank": 6
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 4,
+  "fields": {
+    "player1": 7,
+    "player2": 8,
+    "group": 2,
+    "rank": 1
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 5,
+  "fields": {
+    "player1": 9,
+    "player2": 10,
+    "group": 2,
+    "rank": 3
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 6,
+  "fields": {
+    "player1": 11,
+    "player2": 12,
+    "group": 2,
+    "rank": 5
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 7,
+  "fields": {
+    "player1": 13,
+    "player2": 14,
+    "group": 2,
+    "rank": 7
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 8,
+  "fields": {
+    "player1": 15,
+    "player2": 16,
+    "group": 1,
+    "rank": 1
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 9,
+  "fields": {
+    "player1": 17,
+    "player2": 18,
+    "group": 1,
+    "rank": 3
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 10,
+  "fields": {
+    "player1": 19,
+    "player2": 20,
+    "group": 1,
+    "rank": 2
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 11,
+  "fields": {
+    "player1": 21,
+    "player2": 22,
+    "group": 1,
+    "rank": 4
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 12,
+  "fields": {
+    "player1": 23,
+    "player2": 24,
+    "group": 1,
+    "rank": 5
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 13,
+  "fields": {
+    "player1": 25,
+    "player2": 26,
+    "group": 1,
+    "rank": 6
+  }
+},
+{
+  "model": "tournament.team",
+  "pk": 14,
+  "fields": {
+    "player1": 27,
+    "player2": 28,
+    "group": 1,
+    "rank": 7
+  }
+}
+]

@@ -6,7 +6,7 @@ class PlayerAdmin(admin.ModelAdmin):
     search_fields = ['last_name', 'first_name']
 
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'player1', 'player2', 'group')
+    list_display = ('__str__', 'player1', 'player2', 'group', 'rank')
     list_filter = ('group',)
     search_fields = ['player1__first_name', 'player2__first_name']
 
