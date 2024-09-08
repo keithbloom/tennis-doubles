@@ -1,83 +1,59 @@
 {% extends "base.html" %}
-{% load static %}
 {% load custom_tags %}
-{% block extra_css%}
-<style>
-    .tab-content {
-        display: none;
-    }
 
-    .tab-content:target {
-        display: block;
-    }
-
-    .tab-link.active {
-        border-bottom: 2px solid #3b82f6;
-        color: #2563eb;
-    }
-</style>
-{% endblock %}
 {% block content %}
 <div class="bg-slate-50 container mx-auto">
-    <header class="relative h-32 sm:h-48 md:h-64 w-full bg-cover bg-center"
-        style="background-image: url({% static 'img/tennis-background.jpg' %});">
-        <div class="absolute inset-0 bg-black opacity-10"></div>
-        <div class="relative z-10 flex h-full items-center justify-start px-4">
-            <h1
-                class="font-monofett text-3xl sm:text-3xl md:text-4xl lg:text-7xl text-gray-200 tracking-wider font-thin">
-                The Racketeers & Serve-ivors
-            </h1>
-        </div>
-    </header>
+    {% header %}
 
-    <div class="border-b border-gray-200">
-        <nav class="-mb-px flex" aria-label="Tabs">
-            {% for tab in tabs %}
-            <a href="#{{ tab|lower }}"
-                class="tab-link w-full py-2 px-1 text-center border-b-2 font-medium text-sm {% if forloop.first %}active{% endif %} {% if not forloop.first %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %}"
-                onclick="setActiveTab(this)">
-                {{ tab }}
-            </a>
+    <div class="w-full max-w-3xl mx-auto p-4" x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
+        <div class="border-b border-gray-200">
+            <nav class="-mb-px flex" aria-label="Tabs">
+                {% for data in group_data %}
+                <button class="w-full py-2 px-1 text-center border-b-2 font-medium text-sm" :class="{
+                        'border-blue-500 text-blue-600': activeTab === '{{ data.group.name }}',
+                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== '{{ data.group.name }}'
+                    }" @click="activeTab = '{{ data.group.name }}'">
+                    {{ data.group.name }}
+                </button>
+                {% endfor %}
+            </nav>
+        </div>
+        <div class="mt-4 p-4 bg-white rounded-lg shadow-md">
+            {% for data in group_data %}
+            <div x-show="activeTab === '{{ data.group.name }}'">
+                <div class="overflow-x-auto bg-white shadow-md">
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr>
+                                <th class="sticky left-0 z-10 p-3 bg-white border border-slate-400"></th>
+                                {% for team in data.teams %}
+                                {% with index=forloop.counter0 %}
+                                <th class="p-3 justify-center border text-center border-slate-400">{% team_name team index %}
+                                </th>
+                                {% endwith %}
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in data.match_grid %}
+                            {% with index=forloop.counter0 name=row|first results=row|slice:"1:" %}
+                            <tr>
+                                <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
+                                    {% team_name team=name index=index %}</td>
+                                {% for cell in results%}
+                                <td class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-200{% endif %}">
+                                    {% if cell != None %}{{ cell }}{% endif %}
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             {% endfor %}
-        </nav>
-    </div>
-
-    {% for data in group_data %}
-    <div class="mb-8 p-4">
-        <h2 class="text-2xl font-bold mb-4">{{ data.group.name }}</h2>
-        <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-            <table class="w-full border-collapse border border-slate-400">
-                <thead>
-                    <tr>
-                        <th class="sticky left-0 z-10 p-3 bg-white border border-slate-400"></th>
-                        {% for team in data.teams %}
-                        {% with index=forloop.counter0 %}
-                        <th class="p-3 justify-center border text-center border-slate-400">{% team_name team index %}
-                        </th>
-                        {% endwith %}
-                        {% endfor %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for row in data.match_grid %}
-                    {% with index=forloop.counter0 name=row|first %}
-                    {% with results=row|slice:"1:" %}
-                    <tr>
-                        <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
-                            {% team_name team=name index=index %}</td>
-                        {% for cell in results%}
-                        <td class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-200{% endif %}">
-                            {% if cell != None %}{{ cell }}{% endif %}
-                        </td>
-                        {% endfor %}
-                    </tr>
-                    {% endwith %}
-                    {% endwith %}
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
