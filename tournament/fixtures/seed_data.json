@@ -254,7 +254,7 @@
     "user": 1,
     "content_type": 8,
     "object_id": "8",
-    "object_repr": "Carmel O’Dell",
+    "object_repr": "Carmel O'Dell",
     "action_flag": 1,
     "change_message": "[{\"added\": {}}]"
   }
@@ -806,6 +806,19 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 63,
+  "fields": {
+    "action_time": "2024-09-09T07:56:14.144Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "8",
+    "object_repr": "Carmel O'Dell",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Last name\"]}}]"
+  }
+},
+{
   "model": "auth.user",
   "pk": 1,
   "fields": {
@@ -892,7 +905,7 @@
   "pk": 8,
   "fields": {
     "first_name": "Carmel",
-    "last_name": "O’Dell"
+    "last_name": "O'Dell"
   }
 },
 {
