@@ -6,20 +6,29 @@
     {% header %}
 
     <div class="w-full max-w-3xl mx-auto p-4" x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
-        <div class="border-b border-gray-200">
-            <nav class="-mb-px flex" aria-label="Tabs">
-                {% for data in group_data %}
-                <button class="w-full py-2 px-1 text-center border-b-2 font-medium text-sm" :class="{
-                        'border-blue-500 text-blue-600': activeTab === '{{ data.group.name }}',
-                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300': activeTab !== '{{ data.group.name }}'
-                    }" @click="activeTab = '{{ data.group.name }}'">
+        <div class="bg-blue-200 rounded-t-lg shadow-md overflow-hidden">
+            <div class="flex">
+                {%  for data in group_data %}
+                <button
+                    class="flex-1 py-3 px-4 text-center font-medium text-sm transition duration-200 ease-in-out relative"
+                    :class="{
+                            'bg-blue-200 text-black': activeTab === '{{ data.group.name }}',
+                            'bg-gray-100 text-gray-700 hover:bg-gray-200': activeTab !== '{{ data.group.name }}'
+                        }" @click="activeTab = '{{ data.group.name }}'">
                     {{ data.group.name }}
+                    <div class="absolute bottom-0 left-0 right-0 h-1 bg-blue-200 transition-all duration-200 ease-in-out"
+                        :class="{'opacity-100': activeTab === '{{ data.group.name }}', 'opacity-0': activeTab !== '{{ data.group.name }}'}">
+                    </div>
                 </button>
                 {% endfor %}
-            </nav>
+            </div>
         </div>
-        <div class="mt-4 p-4 bg-white rounded-lg shadow-md">
+        <div class="bg-blue-200 rounded-b-lg shadow-md p-4" x-show="activeTab"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform scale-95"
+            x-transition:enter-end="opacity-100 transform scale-100">
             {% for data in group_data %}
+            {% with group_count=forloop.counter0 %}
             <div x-show="activeTab === '{{ data.group.name }}'">
                 <div class="overflow-x-auto bg-white shadow-md">
                     <table class="w-full border-collapse">
@@ -27,21 +36,23 @@
                             <tr>
                                 <th class="sticky left-0 z-10 p-3 bg-white border border-slate-400"></th>
                                 {% for team in data.teams %}
-                                {% with index=forloop.counter0 %}
-                                <th class="p-3 justify-center border text-center border-slate-400">{% team_name team index %}
+                                {% with index=forloop.counter0 total_rows=data.teams|length  %}
+                                <th class="p-3 justify-center border text-center border-slate-400">
+                                    {% team_name team index group_count=group_count total_teams=total_rows %}
                                 </th>
                                 {% endwith %}
                                 {% endfor %}
                             </tr>
                         </thead>
                         <tbody>
-                            {% for row in data.match_grid %}
-                            {% with index=forloop.counter0 name=row|first results=row|slice:"1:" %}
+                            {% for row in data.match_grid %}                            
+                            {% with index=forloop.counter0 name=row|first results=row|slice:"1:" total_rows=data.teams|length %}
                             <tr>
                                 <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
-                                    {% team_name team=name index=index %}</td>
+                                    {% team_name team=name index=index group_count=group_count total_teams=total_rows %}</td>
                                 {% for cell in results%}
-                                <td class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-200{% endif %}">
+                                <td
+                                    class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-200{% endif %}">
                                     {% if cell != None %}{{ cell }}{% endif %}
                                 </td>
                                 {% endfor %}
@@ -52,8 +63,10 @@
                     </table>
                 </div>
             </div>
+            {% endwith %}
             {% endfor %}
         </div>
     </div>
+
 </div>
 {% endblock %}

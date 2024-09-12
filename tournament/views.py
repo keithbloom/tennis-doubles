@@ -38,7 +38,5 @@ def tournament_grid(request):
 
         group_data.append({"group": group, "teams": teams, "match_grid": match_grid})
 
-    logger.info(f"Match group data: {group_data}")
-
     context = {"group_data": group_data}
     return render(request, "tournament/grid.html", context)
