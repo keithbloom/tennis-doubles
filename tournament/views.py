@@ -33,7 +33,7 @@ def tournament_grid(request):
                         )
                         row.append(points)
                     except Match.DoesNotExist:
-                        row.append("-")  # No match played yet
+                        row.append(" ")  # No match played yet
             match_grid.append(row)
 
         group_data.append({"group": group, "teams": teams, "match_grid": match_grid})
