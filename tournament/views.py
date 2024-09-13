@@ -13,7 +13,7 @@ def tournament_grid(request):
     group_data = []
     for group in groups:
         teams = list(
-            group.teams.all().order_by("player1__last_name", "player2__last_name")
+            group.teams.all().order_by("rank")
         )
         match_grid = []
         for team1 in teams:
