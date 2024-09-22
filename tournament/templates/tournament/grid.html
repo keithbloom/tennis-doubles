@@ -9,7 +9,6 @@
 
     <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto p-4"
         x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
-        <h2 class="text-slate-900 text-xl tracking-tight font-bold mb-3 dark:text-slate-200">Points</h2>
         <div class="bg-gray-200 rounded-t-lg shadow-md overflow-hidden">
             <div class="flex">
                 {% for data in group_data %}
@@ -67,91 +66,18 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="flex flex-col space-y-4">
+                        {% for match in data.matches %}
+                            {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             {% endwith %}
             {% endfor %}
-        </div>
 
-
-        <div class="flex flex-col space-y-4">
-            <!-- Match 1 -->
-
-            {% for match in matches %}
-                {% include "tournament/match_results_table.html" with match=match %}
-            {% endfor %}
-            <!--
-            <table class="mb-2 w-full bg-white shadow-md match-table table-fixed border-l-tab-badge-0 border-l-4">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 bg-tab-badge-0 text-left result-column" colspan="4">Result</th>
-                        <th class="py-2 px-4 text-center score-column">1</th>
-                        <th class="py-2 px-4 text-center score-column">2</th>
-                        <th class="py-2 px-4 text-center score-column">3</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="py-2 px-4">
-                            <div class="font-bold">Lucy</div>
-                            <div class="font-bold">Susan</div>
-                        </td>
-                        <td class="py-2 px-4 text-center font-bold">6</td>
-                        <td class="py-2 px-4 text-center font-bold">6</td>
-                        <td class="py-2 px-4 text-center">-</td>
-                    </tr>
-                    <tr>
-                        <td class="py-2 px-4">
-                            <div>Ainoha</div>
-                            <div>Hannah</div>
-                        </td>
-                        <td class="py-2 px-4 text-center">4</td>
-                        <td class="py-2 px-4 text-center">4</td>
-                        <td class="py-2 px-4 text-center">-</td>
-                        <td class="py-2 px-4"></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <table class="mb-2 w-full bg-white shadow-md match-table table-fixed border-l-tab-badge-1 border-l-4">
-                <thead>
-                    <tr>
-                        <th class="py-2 px-4 bg-tab-badge-1 text-left result-column">Result</th>
-                        <th class="py-2 px-4 text-center score-column">1</th>
-                        <th class="py-2 px-4 text-center score-column">2</th>
-                        <th class="py-2 px-4 text-center score-column">3</th>
-                        <th class="py-2 px-4 checkmark-column"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="py-2 px-4">
-                            <div class="font-bold">Jackie</div>
-                            <div class="font-bold">Carmel</div>
-                        </td>
-                        <td class="py-2 px-4 text-center font-bold">6</td>
-                        <td class="py-2 px-4 text-center">5</td>
-                        <td class="py-2 px-4 text-center font-bold">10</td>
-                        <td class="py-2 px-4 text-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                            </svg>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-2 px-4">
-                            <div>Audrey</div>
-                            <div>Lucy</div>
-                        </td>
-                        <td class="py-2 px-4 text-center">4</td>
-                        <td class="py-2 px-4 text-center font-bold">7</td>
-                        <td class="py-2 px-4 text-center">2</td>
-                        <td class="py-2 px-4"></td>
-                    </tr>
-                </tbody>
-            </table>
-
-        -->
+          
+            </div>
         </div>
 
     </div>

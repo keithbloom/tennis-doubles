@@ -18,88 +18,30 @@
 </style>
 {% endblock %}
 
-<!--
-<table class="w-full bg-white shadow-md table-fixed border-l-4 border-yellow-300 mb-4">
+<table class="mb-2 w-full bg-white shadow-md match-table table-fixed border-l-tab-badge-{{ group_index }} border-l-4">
     <thead>
         <tr>
-            <th colspan="5" class="py-2 px-4 bg-yellow-300 text-left font-bold">Results</th>
+            <th class="py-2 px-4 bg-tab-badge-{{ group_index }} text-left result-column">Result</th>
+            <th class="py-2 px-4 bg-tab-badge-{{ group_index }} text-center score-column"></th>
+            <th class="py-2 px-4 bg-tab-badge-{{ group_index }} text-center score-column"></th>
+            <th class="py-2 px-4 bg-tab-badge-{{ group_index }} text-center score-column"></th>
+            <th class="py-2 px-4 bg-tab-badge-{{ group_index }} checkmark-column"></th>
         </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="py-2 px-4 w-3/5">
-                <div class="font-bold">{{ match.team1_player1 }}</div>
-                <div>{{ match.team1_player2 }}</div>
-            </td>
-            <td class="py-2 px-2 text-center w-10">
-                <span class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set1_team1 }}</span>
-            </td>
-            <td class="py-2 px-2 text-center w-10">
-                <span class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set2_team1 }}</span>
-            </td>
-            <td class="py-2 px-2 text-center w-10">
-                <span class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set3_team1|default:"-" }}</span>
-            </td>
-            <td class="py-2 px-2 text-center w-10">
-                {% if match.team1_winner %}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td class="py-2 px-4">
-                <div>{{ match.team2_player1 }}</div>
-                <div>{{ match.team2_player2 }}</div>
-            </td>
-            <td class="py-2 px-2 text-center">
-                <span class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set1_team2 }}</span>
-            </td>
-            <td class="py-2 px-2 text-center">
-                <span class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set2_team2 }}</span>
-            </td>
-            <td class="py-2 px-2 text-center">
-                <span class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set3_team2|default:"-" }}</span>
-            </td>
-            <td class="py-2 px-2 text-center">
-                {% if not match.team1_winner %}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                {% endif %}
-            </td>
-        </tr>
-    </tbody>
-</table>
--->
-<table class="mb-2 w-full bg-white shadow-md match-table table-fixed border-l-tab-badge-1 border-l-4">
-    <thead>
-
-        <tr>
-            <th class="py-2 px-4 bg-tab-badge-1 text-left result-column">Result</th>
-            <th class="py-2 px-4 bg-tab-badge-1 text-center score-column"></th>
-            <th class="py-2 px-4 bg-tab-badge-1 text-center score-column"></th>
-            <th class="py-2 px-4 bg-tab-badge-1 text-center score-column"></th>
-            <th class="py-2 px-4 bg-tab-badge-1 checkmark-column"></th>
-        </tr>
-
     </thead>
     <tbody>
         <tr>
             <td class="py-2 px-4 result-column">
-                <div class="font-bold">{{ match.team1_player1 }}</div>
-                <div class="font-bold">{{ match.team1_player2 }}</div>
+                <div class="{% if match.match_winner == 'team1' %}font-bold{% endif %}">{{ match.team1_name }}</div>
             </td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set1_team1 }}</span></td>
+                    class="{% if match.set1_winner == 'team1' %}font-bold{% endif %}">{{ match.set1_team1 }}</span></td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set2_team1 }}</span></td>
+                    class="{% if match.set2_winner == 'team1' %}font-bold{% endif %}">{{ match.set2_team1 }}</span></td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if match.team1_winner %}font-bold{% endif %}">{{ match.set3_team1|default:"-" }}</span>
+                    class="{% if match.set3_winner == 'team1' %}font-bold{% endif %}">{{ match.set3_team1|default:"-" }}</span>
             </td>
             <td class="py-2 px-4 text-center checkmark-column">
-                {% if match.team1_winner %}
+                {% if match.match_winner == 'team1' %}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 inline-block" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
@@ -109,18 +51,18 @@
         </tr>
         <tr>
             <td class="py-2 px-4 result-column">
-                <div>{{ match.team2_player1 }}</div>
-                <div>{{ match.team2_player2 }}</div>
+                <div class="{% if match.match_winner == 'team2' %}font-bold{% endif %}">{{ match.team2_name }}</div>
             </td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set1_team2 }}</span></td>
+                    class="{% if match.set1_winner == 'team2' %}font-bold{% endif %}">{{ match.set1_team2 }}</span></td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set2_team2 }}</span></td>
+                    class="{% if match.set2_winner == 'team2' %}font-bold{% endif %}">{{ match.set2_team2 }}</span>
+            </td>
             <td class="py-2 px-4 text-center score-column"><span
-                    class="{% if not match.team1_winner %}font-bold{% endif %}">{{ match.set3_team2|default:"-" }}</span>
+                    class="{% if match.set3_winner == 'team2'%}font-bold{% endif %}">{{ match.set3_team2|default:"-" }}</span>
             </td>
             <td class="py-2 px-4 checkmark-column">
-                {% if not match.team1_winner %}
+                {% if match.match_winner == 'team2' %}
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 inline-block" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
