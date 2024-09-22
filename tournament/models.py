@@ -101,3 +101,4 @@ class Match(models.Model):
             score_team2 += 1
 
         return f"{score_team1}-{score_team2}"
+    

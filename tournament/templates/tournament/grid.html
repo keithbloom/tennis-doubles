@@ -1,17 +1,19 @@
 {% extends "base.html" %}
 {% load custom_tags %}
 
+
 {% block content %}
 <div class="bg-slate-50 container mx-auto">
     {% header %}
 
-    <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto p-4" x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
+
+    <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto p-4"
+        x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
         <div class="bg-gray-200 rounded-t-lg shadow-md overflow-hidden">
             <div class="flex">
                 {% for data in group_data %}
                 {% with group_index=forloop.counter0 %}
-                <button
-                    class="flex-1 py-3 px-4 text-center text-base transition duration-200 ease-in-out relative"
+                <button class="flex-1 py-3 px-4 text-center text-base transition duration-200 ease-in-out relative"
                     :class="{
                             'bg-tab-badge-{{ group_index }} text-black font-bold': activeTab === '{{ data.group.name }}',
                             'bg-gray-100 text-gray-700 hover:bg-gray-200 font-medium': activeTab !== '{{ data.group.name }}'
@@ -47,11 +49,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for row in data.match_grid %}                            
+                            {% for row in data.match_grid %}
                             {% with index=forloop.counter0 name=row|first results=row|slice:"1:" total_rows=data.teams|length %}
                             <tr>
                                 <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
-                                    {% team_name team=name index=index group_count=group_count total_teams=total_rows %}</td>
+                                    {% team_name team=name index=index group_count=group_count total_teams=total_rows %}
+                                </td>
                                 {% for cell in results%}
                                 <td
                                     class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-100{% endif %}">
@@ -63,12 +66,19 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    <div class="flex flex-col space-y-4">
+                        {% for match in data.matches %}
+                            {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             {% endwith %}
             {% endfor %}
-        </div>
-    </div>
 
-</div>
-{% endblock %}
+          
+            </div>
+        </div>
+
+    </div>
+    {% endblock %}
