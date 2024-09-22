@@ -37,6 +37,22 @@ def tournament_grid(request):
             match_grid.append(row)
 
         group_data.append({"group": group, "teams": teams, "match_grid": match_grid})
+        matches = [
+        {
+            'team1_player1': 'Lucy',
+            'team1_player2': 'Susan',
+            'team2_player1': 'Ainoha',
+            'team2_player2': 'Hannah',
+            'set1_team1': 6,
+            'set2_team1': 6,
+            'set3_team1': None,
+            'set1_team2': 4,
+            'set2_team2': 4,
+            'set3_team2': None,
+            'team1_winner': True
+        },
+        # Add more match dictionaries here...
+    ]
 
-    context = {"group_data": group_data}
+    context = {"group_data": group_data, "matches": matches}
     return render(request, "tournament/grid.html", context)
