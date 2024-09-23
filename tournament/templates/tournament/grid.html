@@ -66,19 +66,17 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <div class="flex flex-col space-y-4">
-                        {% for match in data.matches %}
-                            {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
-                        {% endfor %}
-                    </div>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    {% for match in data.matches %}
+                    {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
+                    {% endfor %}
                 </div>
             </div>
             {% endwith %}
             {% endfor %}
-
-          
-            </div>
         </div>
-
     </div>
-    {% endblock %}
+
+</div>
+{% endblock %}
