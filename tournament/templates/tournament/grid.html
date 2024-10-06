@@ -58,7 +58,7 @@
                                 {% for cell in results%}
                                 <td
                                     class="p-3 text-center border border-slate-400 {% if cell == None %}bg-gray-100{% endif %}">
-                                    {% if cell != None %}{{ cell }}{% endif %}
+                                    {% if cell != None %}<p class="text-xl font-semibold">{{ cell }}</p>{% endif %}
                                 </td>
                                 {% endfor %}
                             </tr>
