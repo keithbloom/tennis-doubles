@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.db.models import Q
-from .models import Group, Match
+from django.db.models import Q, Prefetch
+from .models import Group, Match, Team
 from django.db.models import F, Value, CharField, Case, When, IntegerField
 from django.db.models.functions import Concat
 import logging
@@ -132,8 +132,99 @@ def tournament_grid(request):
                 "teams": teams,
                 "match_grid": match_grid,
                 "matches": someMatches,
+                "standings": get_standings(group.id),
             }
         )
         
     context = {"group_data": group_data}
     return render(request, "tournament/grid.html", context)
+
+def get_standings(group_id):
+    try:
+        group = Group.objects.get(id=group_id)
+    except Group.DoesNotExist:
+        return f"Group with id {group_id} does not exist."
+
+    # Prefetch matches for each team in the group
+    team_prefetch1 = Prefetch(
+        'team1_matches',
+        queryset=Match.objects.filter(team1__group_id=group_id),
+        to_attr='matches_as_team1'
+    )
+    team_prefetch2 = Prefetch(
+        'team2_matches',
+        queryset=Match.objects.filter(team2__group_id=group_id),
+        to_attr='matches_as_team2'
+    )
+
+    # Fetch teams with their matches
+    teams = Team.objects.filter(group_id=group_id).prefetch_related(team_prefetch1, team_prefetch2)
+
+    # Process data for each team
+    standings = []
+    for team in teams:
+        total_points = 0
+        total_sets_played = 0
+        total_sets_won = 0
+        total_games_played = 0
+        total_games_won = 0
+        matches_played = 0
+        
+        # Process matches where the team is team1
+        for match in team.matches_as_team1:
+            score = match.get_score()
+            total_points += int(score.split('-')[0])
+            # Always play at least 2 sets
+            total_sets_played += 2 + (1 if match.set3_team1 is not None else 0)
+            total_sets_won += (match.set1_team1 > match.set1_team2) + (match.set2_team1 > match.set2_team2)
+            if match.set3_team1 is not None:
+                total_sets_won += (match.set3_team1 > match.set3_team2)
+            total_games_played += match.set1_team1 + match.set1_team2 + match.set2_team1 + match.set2_team2
+            total_games_won += match.set1_team1 + match.set2_team1
+            matches_played += 1
+
+        # Process matches where the team is team2
+        for match in team.matches_as_team2:
+            score = match.get_score()
+            total_points += int(score.split('-')[1])
+            # Always play at least 2 sets
+            total_sets_played += 2 + (1 if match.set3_team2 is not None else 0)
+            total_sets_won += (match.set1_team2 > match.set1_team1) + (match.set2_team2 > match.set2_team1)
+            if match.set3_team2 is not None:
+                total_sets_won += (match.set3_team2 > match.set3_team1)
+            total_games_played += match.set1_team1 + match.set1_team2 + match.set2_team1 + match.set2_team2
+            total_games_won += match.set1_team2 + match.set2_team2
+            matches_played += 1
+
+        standings.append({
+            'team': team,
+            'total_points': total_points,
+            'matches_played': matches_played,
+            'total_sets_played': total_sets_played,
+            'total_sets_won': total_sets_won,
+            'sets_win_percentage': (total_sets_won / total_sets_played * 100) if total_sets_played > 0 else 0,
+            'total_games_played': total_games_played,
+            'total_games_won': total_games_won,
+            'games_win_percentage': (total_games_won / total_games_played * 100) if total_games_played > 0 else 0
+        
+        })
+
+    # Sort standings by total points (descending)
+    standings.sort(key=lambda x: (x['total_points'], x['sets_win_percentage'], x['games_win_percentage']), reverse=True)
+
+
+    return standings
+
+def test_standings(id):
+    standings = get_standings(id)
+    for rank, stat in enumerate(standings, start=1):
+        print(f"Rank: {rank}")
+        print(f"Team: {stat['team']}")
+        print(f"Total Points: {stat['total_points']}")
+        print(f"Matches Played: {stat['matches_played']}")
+        print(f"Total Sets Played: {stat['total_sets_played']}")
+        print(f"Total Sets Won: {stat['total_sets_won']}")
+        print(f"Sets Win Percentage: {stat['sets_win_percentage']:.2f}%")
+        print(f"Total Games Played: {stat['total_games_played']}")
+        print(f"Total Games Won: {stat['total_games_won']}")
+        print("---")
