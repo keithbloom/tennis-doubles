@@ -226,3 +226,5 @@ build/Release
 .vscode-test
 
 data/
+Scripts/
+Lib/
