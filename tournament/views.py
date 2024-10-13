@@ -2,10 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q, Prefetch
 from .models import Group, Match, Team
 from django.db.models import F, Value, CharField, Case, When, IntegerField
-from django.db.models import (
-    Sum, Count, Subquery, OuterRef
-)
-from django.db.models.functions import Concat, Round
+from django.db.models.functions import Concat
 import logging
 
 logger = logging.getLogger(__name__)
@@ -135,6 +132,7 @@ def tournament_grid(request):
                 "teams": teams,
                 "match_grid": match_grid,
                 "matches": someMatches,
+                "standings": get_standings(group.id),
             }
         )
         

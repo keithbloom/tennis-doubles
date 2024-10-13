@@ -1,0 +1,30 @@
+<div class="flex flex-col space-y-4 mt-4">
+    <div class="overflow-x-auto">
+        <div class="inline-block min-w-full align-middle">
+            <table
+                class="min-w-full divide-y divide-gray-200 table-fixed border-l-tab-badge-{{ group_index }} border-l-4 border-b-tab-badge-{{ group_index }} border-b-4">
+                <thead class="bg-tab-badge-{{ group_index }}">
+                    <tr>
+                        <th
+                            class="sticky left-0 z-20 p-3 text-sm font-light text-left bg-tab-badge-{{ group_index }} whitespace-nowrap min-w-40 md:min-w-80">
+                            &nbsp;
+                        </th>
+                        <th class="p-3 text-sm font-light text-left whitespace-nowrap min-w-24">Points</th>
+                        <th class="p-3 text-sm font-light text-left whitespace-nowrap min-w-24">Sets (%)</th>
+                        <th class="p-3 text-sm font-light text-left whitespace-nowrap min-w-24">Games (%)</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for standing in data.standings %}
+                    <tr>
+                        <td class="sticky left-0 z-10 p-3 text-sm bg-white whitespace-nowrap">{{ standing.team }}</td>
+                        <td class="p-3 text-sm whitespace-nowrap">{{ standing.total_points }}</td>
+                        <td class="p-3 text-sm whitespace-nowrap">{{ standing.sets_win_percentage|floatformat }}%</td>
+                        <td class="p-3 text-sm whitespace-nowrap">{{ standing.games_win_percentage|floatformat }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
