@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="min-h-screen">
 
 <head>
     <meta charset="UTF-8">
@@ -25,8 +25,22 @@
     {% block extra_css %}{% endblock %}
 </head>
 
-<body class="bg-slate-100">
+<body class="flex flex-col min-h-screen bg-slate-100">
+    <div class="flex-grow bg-slate-50 container mx-auto">
     {% block  content %} {% endblock %}
+    </div>
+
+
+    <footer class="w-full bg-gray-800 mt-auto relative">
+        <div class="absolute inset-0 overflow-hidden">
+            <img src="/static/img/grass-footer.jpg" alt="Footer Background" class="w-full h-full object-cover object-center opacity-80" />
+        </div>
+        <div class="container mx-auto px-4 py-8 relative z-10">
+            <div class="flex justify-center items-center">
+                <p class="text-white text-xl font-semibold">&nbsp;</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
