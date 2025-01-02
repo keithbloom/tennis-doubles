@@ -2,6 +2,37 @@ from django.db import models
 from django.core.exceptions import ValidationError
 
 
+class Tournament(models.Model):
+    STATUS_CHOICES = [
+        ('ONGOING', 'Ongoing'),
+        ('COMPLETED', 'Completed'),
+    ]
+    
+    name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='ONGOING'
+    )
+    groups = models.ManyToManyField('Group', through='TournamentGroup')
+
+    def clean(self):
+        if self.end_date and self.end_date < self.start_date:
+            raise ValidationError("End date must be after start date")
+        
+        if self.status == 'COMPLETED' and not self.end_date:
+            raise ValidationError("End date must be set when tournament is completed")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
 class Player(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -11,10 +42,21 @@ class Player(models.Model):
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
+
+
+class TournamentGroup(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ['tournament', 'group']
+
+    def __str__(self):
+        return f"{self.group.name} in {self.tournament.name}"
 
 
 class Team(models.Model):
@@ -24,12 +66,16 @@ class Team(models.Model):
     player2 = models.ForeignKey(
         Player, related_name="teams_as_player2", on_delete=models.CASCADE
     )
-    group = models.ForeignKey(Group, related_name="teams", on_delete=models.CASCADE)
+    tournament_group = models.ForeignKey(
+        TournamentGroup, 
+        related_name="teams", 
+        on_delete=models.CASCADE,
+    )
     rank = models.IntegerField(null=True, blank=True)
 
     class Meta:
-        unique_together = ["player1", "player2", "group"]
-        ordering = ["group", "rank"]
+        unique_together = ["player1", "player2", "tournament_group"]
+        ordering = ["tournament_group", "rank"]
 
     def clean(self):
         if self.player1 == self.player2:
@@ -44,6 +90,11 @@ class Team(models.Model):
 
 
 class Match(models.Model):
+    tournament = models.ForeignKey(
+        Tournament,
+        related_name="matches",
+        on_delete=models.CASCADE,
+    )
     team1 = models.ForeignKey(
         Team, related_name="team1_matches", on_delete=models.CASCADE
     )
@@ -59,8 +110,18 @@ class Match(models.Model):
     date_played = models.DateField(null=True, blank=True)
 
     def clean(self):
-        if self.team1.group != self.team2.group:
-            raise ValidationError("Teams must be in the same group")
+        if self.team1.tournament_group != self.team2.tournament_group:
+            raise ValidationError("Teams must be in the same tournament group")
+
+        if self.team1.tournament_group.tournament != self.tournament or \
+           self.team2.tournament_group.tournament != self.tournament:
+            raise ValidationError("Teams must belong to the tournament's groups")
+
+        if self.date_played:
+            if self.date_played < self.tournament.start_date:
+                raise ValidationError("Match cannot be played before tournament start date")
+            if self.tournament.end_date and self.date_played > self.tournament.end_date:
+                raise ValidationError("Match cannot be played after tournament end date")
 
         sets = [(self.set1_team1, self.set1_team2), (self.set2_team1, self.set2_team2)]
         if self.set3_team1 is not None and self.set3_team2 is not None:
@@ -80,7 +141,7 @@ class Match(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.team1} vs {self.team2}"
+        return f"{self.team1} vs {self.team2} ({self.tournament})"
 
     def get_score(self):
         sets = [(self.set1_team1, self.set1_team2), (self.set2_team1, self.set2_team2)]
@@ -101,4 +162,3 @@ class Match(models.Model):
             score_team2 += 1
 
         return f"{score_team1}-{score_team2}"
-    
