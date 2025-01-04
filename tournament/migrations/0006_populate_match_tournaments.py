@@ -19,9 +19,9 @@ def link_matches_to_tournament(apps, schema_editor):
     
     # Create default tournament
     default_tournament, _ = Tournament.objects.get_or_create(
-        name="Legacy Tournament",
+        name="Winter 2024",
         defaults={
-            'start_date': '2024-01-01',
+            'start_date': '2024-09-02',
             'status': 'ONGOING'
         }
     )
@@ -66,7 +66,7 @@ def reverse_migration(apps, schema_editor):
     Match.objects.all().update(tournament=None)
     TournamentGroup.objects.all().delete()
     Tournament.objects.all().delete()
-    
+
 class Migration(migrations.Migration):
     dependencies = [
         ('tournament', '0005_tournament_alter_team_options_alter_group_name_and_more'),
