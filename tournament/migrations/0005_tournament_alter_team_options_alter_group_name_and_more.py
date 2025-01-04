@@ -2,25 +2,25 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
+import json
 
-def store_group_data(apps, schema_editor):
+def store_group_mappings(apps, schema_editor):
     Team = apps.get_model('tournament', 'Team')
-    # Create a temporary field or table to store the mapping
-    # We can use a simple dict for now and store it in the migration state
-    group_mappings = {}
-    for team in Team.objects.all():
-        group_mappings[team.id] = team.group_id
+    Group = apps.get_model('tournament', 'Group')
     
-    # Store this data somewhere that subsequent migrations can access
-    # One way is to store it directly in the database:
-    Group = apps.get_model('tournament', 'Group')
-    for group in Group.objects.all():
-        group.temp_data = True  # Add a marker we can check later
-        group.save()
+    # Create a mapping of team IDs to their group names
+    mappings = {
+        team.id: team.group.name 
+        for team in Team.objects.select_related('group').all()
+    }
+    
+    # Store this in a new model that we'll create just for the migration
+    GroupMapping = apps.get_model('tournament', 'GroupMapping')
+    GroupMapping.objects.create(mapping_data=json.dumps(mappings))
 
-def reverse_group_data(apps, schema_editor):
-    Group = apps.get_model('tournament', 'Group')
-    Group.objects.filter(temp_data=True).delete()
+def reverse_group_mappings(apps, schema_editor):
+    GroupMapping = apps.get_model('tournament', 'GroupMapping')
+    GroupMapping.objects.all().delete()
 
 class Migration(migrations.Migration):
 
@@ -29,12 +29,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='group',
-            name='temp_data',
-            field=models.BooleanField(default=False),
+       migrations.CreateModel(
+            name='GroupMapping',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('mapping_data', models.TextField()),
+            ],
         ),
-        migrations.RunPython(store_group_data, reverse_group_data),
+        migrations.RunPython(store_group_mappings, reverse_group_mappings),
         migrations.CreateModel(
             name='Tournament',
             fields=[

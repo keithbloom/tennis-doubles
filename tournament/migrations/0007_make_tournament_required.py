@@ -21,4 +21,7 @@ class Migration(migrations.Migration):
                 to='tournament.tournament'
             ),
         ),
+        migrations.DeleteModel(
+            name='GroupMapping',
+        ),
     ]
