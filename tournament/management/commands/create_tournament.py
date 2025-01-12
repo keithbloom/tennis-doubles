@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from tournament.models import Tournament, Group, TournamentGroup, Team
+from tournament.models import Tournament, TournamentGroup, Team
 from django.db import transaction
 
 class Command(BaseCommand):

@@ -33,7 +33,18 @@
             x-transition:enter-end="opacity-100 transform scale-100">
             {% for data in group_data %}
             {% with group_count=forloop.counter0 %}
-            <div x-show="activeTab === '{{ data.group.name }}'">
+            <div x-show="activeTab === '{{ data.group.name }}'" class="flex flex-col space-y-4">
+                <!-- Standings Table -->
+                {% include "tournament/standings_table.html" with data=data group_index=group_count %}
+
+                <!-- Match Results Table -->
+                <div class="flex flex-col space-y-4">
+                    {% for match in data.matches %}
+                    {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
+                    {% endfor %}
+                </div>
+
+                <!-- Match Grid Table -->
                 <div class="overflow-x-auto bg-white shadow-md">
                     <table class="w-full border-collapse">
                         <thead>
@@ -68,14 +79,6 @@
                     </table>
                 </div>
 
-                <!-- New Standings Table -->
-                {% include "tournament/standings_table.html" with data=data group_index=group_count %}
-
-                <div class="flex flex-col space-y-4">
-                    {% for match in data.matches %}
-                    {% include "tournament/match_results_table.html" with match=match group_index=group_count %}
-                    {% endfor %}
-                </div>
             </div>
             {% endwith %}
             {% endfor %}

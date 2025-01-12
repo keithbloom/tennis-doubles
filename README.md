@@ -28,7 +28,7 @@ npm install
 npm run build
 ```
 
-### Starting up the Django application
+### Starting the Django application
 
 Create a virtual environment and install dependencies:
 ```
@@ -67,3 +67,25 @@ Run the application
 ```bash
 python manage.py runserver
 ```
+
+## Management commands
+These are custom management commands added to `./management/commands/`
+
+#### Backup and restore the database 
+
+These commands use and S3 bucket to store and retrieve the database backup from. The keys for S3 must be present in the ENV
+
+To backup the database run:
+
+```bash
+python manage.py backup_db 
+```
+
+To restore the database run:
+
+```bash
+python manage.py backup_db 
+```
+#### Create tournament
+
+Running `python manage.py create_tournament [tournament_name]` where will create a new tournament using the supplied name. It will populate the groups and the teams using the previous tournament with the most recent start_date.
