@@ -1,21 +1,29 @@
 from django.shortcuts import render
-from django.db.models import Q, Prefetch
-from .models import Group, Match, Team
-from django.db.models import F, Value, CharField, Case, When, IntegerField
+from django.db.models import Q, Prefetch, F, Value, CharField, Case, When, IntegerField
 from django.db.models.functions import Concat
+from .models import Tournament, Group, Match, Team, TournamentGroup
 import logging
 
 logger = logging.getLogger(__name__)
 
-
 def tournament_grid(request):
-    groups = Group.objects.prefetch_related("teams").all()
+    # Get the ongoing tournament
+    tournament = Tournament.objects.get(status='ONGOING')
+    
+    # Get all tournament groups for this tournament
+    tournament_groups = TournamentGroup.objects.filter(tournament=tournament).select_related('group')
     group_data = []
-    for group in groups:
-        teams = list(group.teams.all().order_by("rank"))
+    
+    for tournament_group in tournament_groups:
+        teams = list(tournament_group.teams.all().order_by("rank"))
         match_grid = []
+        
+        # Get matches for this tournament group
         someMatches = (
-            Match.objects.order_by('-date_played').filter(team1__group=group)
+            Match.objects.filter(
+                tournament=tournament,
+                team1__tournament_group=tournament_group
+            ).order_by('-date_played')
             .annotate(
                 team1_name=Concat(
                     F("team1__player1__first_name"),
@@ -106,6 +114,7 @@ def tournament_grid(request):
                 "date_played",
             )
         )
+
         for team1 in teams:
             row = [team1]
             for team2 in teams:
@@ -114,51 +123,59 @@ def tournament_grid(request):
                 else:
                     try:
                         match = Match.objects.get(
-                            Q(team1=team1, team2=team2) | Q(team1=team2, team2=team1)
+                            Q(team1=team1, team2=team2) | Q(team1=team2, team2=team1),
+                            tournament=tournament,
                         )
                         # Calculate points for team1 in this match
                         score = match.get_score().split("-")
-                        points = (
-                            int(score[0]) if match.team1 == team1 else int(score[1])
-                        )
+                        points = int(score[0]) if match.team1 == team1 else int(score[1])
                         row.append(points)
                     except Match.DoesNotExist:
                         row.append(" ")  # No match played yet
             match_grid.append(row)
 
-        group_data.append(
-            {
-                "group": group,
-                "teams": teams,
-                "match_grid": match_grid,
-                "matches": someMatches,
-                "standings": get_standings(group.id),
-            }
-        )
-        
+        group_data.append({
+            "group": tournament_group.group,
+            "teams": teams,
+            "match_grid": match_grid,
+            "matches": someMatches,
+            "standings": get_standings(tournament.id, tournament_group.id),
+        })
+    
     context = {"group_data": group_data}
     return render(request, "tournament/grid.html", context)
 
-def get_standings(group_id):
+def get_standings(tournament_id, tournament_group_id):
     try:
-        group = Group.objects.get(id=group_id)
-    except Group.DoesNotExist:
-        return f"Group with id {group_id} does not exist."
+        tournament_group = TournamentGroup.objects.get(
+            id=tournament_group_id,
+            tournament_id=tournament_id
+        )
+    except TournamentGroup.DoesNotExist:
+        return f"Tournament group with id {tournament_group_id} does not exist."
 
-    # Prefetch matches for each team in the group
+    # Prefetch matches for each team in the tournament group
     team_prefetch1 = Prefetch(
         'team1_matches',
-        queryset=Match.objects.filter(team1__group_id=group_id),
+        queryset=Match.objects.filter(
+            tournament_id=tournament_id,
+            team1__tournament_group_id=tournament_group_id
+        ),
         to_attr='matches_as_team1'
     )
     team_prefetch2 = Prefetch(
         'team2_matches',
-        queryset=Match.objects.filter(team2__group_id=group_id),
+        queryset=Match.objects.filter(
+            tournament_id=tournament_id,
+            team2__tournament_group_id=tournament_group_id
+        ),
         to_attr='matches_as_team2'
     )
 
     # Fetch teams with their matches
-    teams = Team.objects.filter(group_id=group_id).prefetch_related(team_prefetch1, team_prefetch2)
+    teams = Team.objects.filter(
+        tournament_group_id=tournament_group_id
+    ).prefetch_related(team_prefetch1, team_prefetch2)
 
     # Process data for each team
     standings = []
@@ -174,26 +191,30 @@ def get_standings(group_id):
         for match in team.matches_as_team1:
             score = match.get_score()
             total_points += int(score.split('-')[0])
-            # Always play at least 2 sets
             total_sets_played += 2 + (1 if match.set3_team1 is not None else 0)
             total_sets_won += (match.set1_team1 > match.set1_team2) + (match.set2_team1 > match.set2_team2)
             if match.set3_team1 is not None:
                 total_sets_won += (match.set3_team1 > match.set3_team2)
             total_games_played += match.set1_team1 + match.set1_team2 + match.set2_team1 + match.set2_team2
             total_games_won += match.set1_team1 + match.set2_team1
+            if match.set3_team1 is not None:
+                total_games_played += match.set3_team1 + match.set3_team2
+                total_games_won += match.set3_team1
             matches_played += 1
 
         # Process matches where the team is team2
         for match in team.matches_as_team2:
             score = match.get_score()
             total_points += int(score.split('-')[1])
-            # Always play at least 2 sets
             total_sets_played += 2 + (1 if match.set3_team2 is not None else 0)
             total_sets_won += (match.set1_team2 > match.set1_team1) + (match.set2_team2 > match.set2_team1)
             if match.set3_team2 is not None:
                 total_sets_won += (match.set3_team2 > match.set3_team1)
             total_games_played += match.set1_team1 + match.set1_team2 + match.set2_team1 + match.set2_team2
             total_games_won += match.set1_team2 + match.set2_team2
+            if match.set3_team2 is not None:
+                total_games_played += match.set3_team1 + match.set3_team2
+                total_games_won += match.set3_team2
             matches_played += 1
 
         standings.append({
@@ -206,17 +227,15 @@ def get_standings(group_id):
             'total_games_played': total_games_played,
             'total_games_won': total_games_won,
             'games_win_percentage': (total_games_won / total_games_played * 100) if total_games_played > 0 else 0
-        
         })
 
     # Sort standings by total points (descending)
     standings.sort(key=lambda x: (x['total_points'], x['sets_win_percentage'], x['games_win_percentage']), reverse=True)
 
-
     return standings
 
-def test_standings(id):
-    standings = get_standings(id)
+def test_standings(tournament_id, tournament_group_id):
+    standings = get_standings(tournament_id, tournament_group_id)
     for rank, stat in enumerate(standings, start=1):
         print(f"Rank: {rank}")
         print(f"Team: {stat['team']}")
