@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 from .models import Tournament, Group, TournamentGroup, Player, Team, Match
 
 @admin.register(Tournament)
@@ -37,11 +38,40 @@ class TeamAdmin(admin.ModelAdmin):
     get_tournament.short_description = 'Tournament'
     get_tournament.admin_order_field = 'tournament_group__tournament'
 
+class MatchAdminForm(forms.ModelForm):
+    class Meta:
+        model = Match
+        fields = ['tournament', 'team1', 'team2', 'set1_team1', 'set1_team2', 
+                 'set2_team1', 'set2_team2', 'set3_team1', 'set3_team2', 
+                 'date_played']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # For both new instances and edits, get the tournament
+        tournament = None
+        if self.instance.pk:
+            tournament = self.instance.tournament
+        elif self.data.get('tournament'):
+            try:
+                tournament = Tournament.objects.get(pk=self.data.get('tournament'))
+            except Tournament.DoesNotExist:
+                pass
+
+        # Set the team querysets based on tournament
+        if tournament:
+            teams = Team.objects.filter(tournament_group__tournament=tournament)
+            self.fields['team1'].queryset = teams
+            self.fields['team2'].queryset = teams
+        else:
+            self.fields['team1'].queryset = Team.objects.none()
+            self.fields['team2'].queryset = Team.objects.none()
+
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'tournament', 'date_played', 'get_score']
-    list_filter = ['tournament', 'team1__tournament_group__group', 'date_played']
-    search_fields = ['team1__player1__first_name', 'team1__player1__last_name',
-                    'team1__player2__first_name', 'team1__player2__last_name',
-                    'team2__player1__first_name', 'team2__player1__last_name',
-                    'team2__player2__first_name', 'team2__player2__last_name']
+    form = MatchAdminForm
+    list_display = ('__str__', 'tournament', 'date_played', 'get_score')
+    list_filter = ('tournament', 'team1__tournament_group', 'date_played')
+
+    class Media:
+        js = ('js/match_admin.js',)
