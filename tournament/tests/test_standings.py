@@ -1,14 +1,24 @@
 from django.test import TransactionTestCase
 from django.core.exceptions import ValidationError
-from tournament.models import Player, Group, Team, Match
-from tournament.views import get_standings  # Assuming the function is in utils.py
-from unittest import skip
+from tournament.models import Player, Group, Team, Match, Tournament, TournamentGroup
+from tournament.views import get_standings
 
-@skip("Skip until updated")
 class GetStandingsTestCase(TransactionTestCase):
     def setUp(self):
+        # Create a test tournament
+        self.tournament = Tournament.objects.create(
+            name="Test Tournament", 
+            start_date="2024-01-01"
+        )
+        
         # Create a test group
         self.group = Group.objects.create(name="Test Group")
+        
+        # Create tournament group
+        self.tournament_group = TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=self.group
+        )
 
         # Create test players
         self.player1 = Player.objects.create(first_name="Player1", last_name="One")
@@ -17,24 +27,34 @@ class GetStandingsTestCase(TransactionTestCase):
         self.player4 = Player.objects.create(first_name="Player4", last_name="Four")
 
         # Create test teams
-        self.team1 = Team.objects.create(player1=self.player1, player2=self.player2, group=self.group)
-        self.team2 = Team.objects.create(player1=self.player3, player2=self.player4, group=self.group)
+        self.team1 = Team.objects.create(
+            player1=self.player1, 
+            player2=self.player2, 
+            tournament_group=self.tournament_group
+        )
+        self.team2 = Team.objects.create(
+            player1=self.player3, 
+            player2=self.player4, 
+            tournament_group=self.tournament_group
+        )
 
     def tearDown(self):
         # Clean up all created objects
         Match.objects.all().delete()
         Team.objects.all().delete()
+        TournamentGroup.objects.all().delete()
         Player.objects.all().delete()
         Group.objects.all().delete()
+        Tournament.objects.all().delete()
 
-    def test_group_not_found(self):
-        # Test when the group doesn't exist
-        result = get_standings(999)
-        self.assertEqual(result, "Group with id 999 does not exist.")
+    def test_tournament_group_not_found(self):
+        # Test when the tournament group doesn't exist
+        result = get_standings(self.tournament.id, 999)
+        self.assertEqual(result, f"Tournament group with id 999 does not exist.")
 
     def test_empty_group(self):
         # Test when the group has no matches
-        standings = get_standings(self.group.id)
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
         self.assertEqual(len(standings), 2)
         for standing in standings:
             self.assertEqual(standing['total_points'], 0)
@@ -49,11 +69,15 @@ class GetStandingsTestCase(TransactionTestCase):
     def test_single_match_two_sets(self):
         # Test with a single match of two sets
         Match.objects.create(
-            team1=self.team1, team2=self.team2,
-            set1_team1=6, set1_team2=4,
-            set2_team1=6, set2_team2=3
+            tournament=self.tournament,
+            team1=self.team1, 
+            team2=self.team2,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=6, 
+            set2_team2=3
         )
-        standings = get_standings(self.group.id)
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
         self.assertEqual(len(standings), 2)
         
         # Check team1 stats
@@ -81,12 +105,17 @@ class GetStandingsTestCase(TransactionTestCase):
     def test_single_match_three_sets(self):
         # Test with a single match of three sets
         Match.objects.create(
-            team1=self.team1, team2=self.team2,
-            set1_team1=6, set1_team2=4,
-            set2_team1=4, set2_team2=6,
-            set3_team1=7, set3_team2=5
+            tournament=self.tournament,
+            team1=self.team1, 
+            team2=self.team2,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=4, 
+            set2_team2=6,
+            set3_team1=7, 
+            set3_team2=5
         )
-        standings = get_standings(self.group.id)
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
         
         # Check team1 stats
         team1_standing = next(s for s in standings if s['team'] == self.team1)
@@ -97,16 +126,24 @@ class GetStandingsTestCase(TransactionTestCase):
     def test_multiple_matches(self):
         # Test with multiple matches
         Match.objects.create(
-            team1=self.team1, team2=self.team2,
-            set1_team1=6, set1_team2=4,
-            set2_team1=6, set2_team2=3
+            tournament=self.tournament,
+            team1=self.team1, 
+            team2=self.team2,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=6, 
+            set2_team2=3
         )
         Match.objects.create(
-            team1=self.team2, team2=self.team1,
-            set1_team1=7, set1_team2=5,
-            set2_team1=6, set2_team2=4
+            tournament=self.tournament,
+            team1=self.team2, 
+            team2=self.team1,
+            set1_team1=7, 
+            set1_team2=5,
+            set2_team1=6, 
+            set2_team2=4
         )
-        standings = get_standings(self.group.id)
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
         
         # Both teams should have played 2 matches
         for standing in standings:
@@ -117,18 +154,30 @@ class GetStandingsTestCase(TransactionTestCase):
         # Test that standings are sorted correctly
         player5 = Player.objects.create(first_name="Player", last_name="Five")
         player6 = Player.objects.create(first_name="Player", last_name="Six")
-        team3 = Team.objects.create(player1=player5, player2=player6, group=self.group)
-        Match.objects.create(
-            team1=self.team1, team2=self.team2,
-            set1_team1=6, set1_team2=4,
-            set2_team1=6, set2_team2=3
+        team3 = Team.objects.create(
+            player1=player5, 
+            player2=player6, 
+            tournament_group=self.tournament_group
         )
         Match.objects.create(
-            team1=self.team2, team2=team3,
-            set1_team1=6, set1_team2=4,
-            set2_team1=6, set2_team2=3
+            tournament=self.tournament,
+            team1=self.team1, 
+            team2=self.team2,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=6, 
+            set2_team2=3
         )
-        standings = get_standings(self.group.id)
+        Match.objects.create(
+            tournament=self.tournament,
+            team1=self.team2, 
+            team2=team3,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=6, 
+            set2_team2=3
+        )
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
 
         # Team1 and Team2 should have more points than Team3
         self.assertEqual(standings[0]['team'], self.team2)
@@ -138,11 +187,15 @@ class GetStandingsTestCase(TransactionTestCase):
     def test_get_score_method(self):
         # Test that the get_score method is used correctly
         match = Match.objects.create(
-            team1=self.team1, team2=self.team2,
-            set1_team1=6, set1_team2=4,
-            set2_team1=6, set2_team2=3
+            tournament=self.tournament,
+            team1=self.team1, 
+            team2=self.team2,
+            set1_team1=6, 
+            set1_team2=4,
+            set2_team1=6, 
+            set2_team2=3
         )
-        standings = get_standings(self.group.id)
+        standings = get_standings(self.tournament.id, self.tournament_group.id)
         
         team1_standing = next(s for s in standings if s['team'] == self.team1)
         expected_score = match.get_score().split('-')[0]
@@ -151,17 +204,33 @@ class GetStandingsTestCase(TransactionTestCase):
     def test_team_validation(self):
         # Test that a team cannot be created with the same player twice
         with self.assertRaises(ValidationError):
-            Team.objects.create(player1=self.player1, player2=self.player1, group=self.group)
+            Team.objects.create(
+                player1=self.player1, 
+                player2=self.player1, 
+                tournament_group=self.tournament_group
+            )
 
     def test_match_validation(self):
-        # Test that a match cannot be created with teams from different groups
+        # Test that a match cannot be created with teams from different tournament groups
         other_group = Group.objects.create(name="Other Group")
+        other_tournament_group = TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=other_group
+        )
         player7 = Player.objects.create(first_name="Player", last_name="Seven")
         player8 = Player.objects.create(first_name="Player", last_name="Eight")
-        team3 = Team.objects.create(player1=player7, player2=player8, group=other_group)
+        team3 = Team.objects.create(
+            player1=player7, 
+            player2=player8, 
+            tournament_group=other_tournament_group
+        )
         with self.assertRaises(ValidationError):
             Match.objects.create(
-                team1=self.team1, team2=team3,
-                set1_team1=6, set1_team2=4,
-                set2_team1=6, set2_team2=3
+                tournament=self.tournament,
+                team1=self.team1, 
+                team2=team3,
+                set1_team1=6, 
+                set1_team2=4,
+                set2_team1=6, 
+                set2_team2=3
             )

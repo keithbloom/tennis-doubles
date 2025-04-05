@@ -72,6 +72,7 @@ class Team(models.Model):
         on_delete=models.CASCADE,
     )
     rank = models.IntegerField(null=True, blank=True)
+    is_withdrawn = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ["player1", "player2", "tournament_group"]
