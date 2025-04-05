@@ -3,7 +3,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from django.db.models import Q, Prefetch, F, Value, CharField, Case, When, IntegerField
 from django.db.models.functions import Concat
-from .models import Tournament, Group, Match, Team, TournamentGroup
+from .models import Tournament, Match, Team, TournamentGroup
 import logging
 
 logger = logging.getLogger(__name__)

@@ -17,7 +17,13 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     {% for standing in data.standings %}
                     <tr>
-                        <td class="sticky left-0 z-10 p-3 text-sm bg-white whitespace-nowrap">{{ standing.team }}</td>
+                        <td class="sticky left-0 z-10 p-3 text-sm bg-white whitespace-nowrap">
+                            {% if standing.team.is_withdrawn %}
+                                <span class="line-through text-gray-500">{{ standing.team }}</span>
+                            {% else %}
+                                {{ standing.team }}
+                            {% endif %}
+                        </td>
                         <td class="p-3 text-sm whitespace-nowrap">{{ standing.total_points }}</td>
                         <td class="p-3 text-sm whitespace-nowrap">{{ standing.sets_win_percentage|floatformat }}%</td>
                         <td class="p-3 text-sm whitespace-nowrap">{{ standing.games_win_percentage|floatformat }}%</td>
