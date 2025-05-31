@@ -1,0 +1,9 @@
+{% if cell != None %}
+    {% if cell == 'W' %}
+        <p class="text-xs text-gray-400">withdrawn</p>
+    {% else %}
+        <p class="text-xl font-semibold {% if team.is_withdrawn %}text-gray-500{% else %}text-black{% endif %}">
+            {{ cell }}
+        </p>
+    {% endif %}
+{% endif %}

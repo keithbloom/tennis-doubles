@@ -1,0 +1,10 @@
+<div x-show="activeTab === '{{ group.name }}'" class="flex flex-col space-y-4">
+    <!-- Standings Table -->
+    {% include "tournament/standings_table.html" with data=data group_index=group_index %}
+
+    <!-- Match Results -->
+    {% include "components/match_results.html" with matches=data.matches group_index=group_index %}
+
+    <!-- Match Grid -->
+    {% include "components/match_grid.html" with teams=data.teams match_grid=data.match_grid group_index=group_index %}
+</div>
