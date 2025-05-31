@@ -1,0 +1,38 @@
+{% load custom_tags %}
+<div class="overflow-x-auto bg-white shadow-md">
+    <table class="w-full border-collapse">
+        <thead>
+            <tr>
+                <th class="sticky left-0 z-10 p-3 bg-white border border-slate-400"></th>
+                {% for team in teams %}
+                {% with index=forloop.counter0 total_rows=teams|length %}
+                <th class="p-3 justify-center border text-center border-slate-400 {% if team.is_withdrawn %}bg-gray-50{% endif %}">
+                    {% team_name team index group_count=group_index total_teams=total_rows %}
+                </th>
+                {% endwith %}
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in match_grid %}
+            {% with index=forloop.counter0 name=row|first results=row|slice:"1:" total_rows=teams|length %}
+            <tr>
+                <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
+                    {% team_name team=name index=index group_count=group_index total_teams=total_rows %}
+                </td>
+                {% for cell in results %}
+                {% with team=teams|get_item:forloop.counter0 %}
+                <td class="p-3 text-center border border-slate-400 
+                    {% if cell == None %}bg-gray-100
+                    {% elif team.is_withdrawn %}bg-gray-50
+                    {% endif %}">
+                    {% include "components/grid_cell.html" with cell=cell team=team %}
+                </td>
+                {% endwith %}
+                {% endfor %}
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
