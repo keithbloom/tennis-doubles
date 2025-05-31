@@ -9,11 +9,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 def tournament_grid(request):
-    # Get the ongoing tournament
-    tournament = Tournament.objects.get(status='ONGOING')
+    # Get latest ongoing tournament
+    tournament = Tournament.objects.filter(
+        status='ONGOING',
+        end_date__isnull=True
+    ).order_by('-start_date').first()
+    
+    if not tournament:
+        return render(request, 'tournament/no_tournament.html')
     
     # Get all tournament groups for this tournament
-    tournament_groups = TournamentGroup.objects.filter(tournament=tournament).select_related('group')
+    tournament_groups = TournamentGroup.objects.filter(
+        tournament=tournament
+    ).select_related('group')
     group_data = []
     
     for tournament_group in tournament_groups:

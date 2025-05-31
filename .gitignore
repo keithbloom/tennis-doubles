@@ -33,6 +33,7 @@ Thumbs.db
 
 # Django static files
 /static/
+/staticfiles/
 
 # Secret key
 *.secret
