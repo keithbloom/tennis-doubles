@@ -1,5 +1,5 @@
 <div class="flex flex-col space-y-4">
-    {% for match in group_data.matches %}
+    {% for match in matches %}
     {% include "tournament/match_results_table.html" with match=match group_index=group_index %}
     {% endfor %}
 </div>
