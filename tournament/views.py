@@ -1,10 +1,9 @@
 # tournament/views.py
+from datetime import datetime
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import render
-from django.views import View
 from django.views.generic import TemplateView
-from .models import Tournament, Match
+from .models import Tournament
 from .services import TournamentGridBuilder, StandingsCalculator
 from .api import TeamAPI
 import logging
@@ -20,7 +19,7 @@ class TournamentGridView(TemplateView):
     def get_template_names(self):
         """Return template name based on tournament existence"""
         tournament = (
-            Tournament.objects.filter(status="ONGOING", end_date__isnull=True)
+            Tournament.objects.filter(status="ONGOING", end_date__isnull=True, start_date__lte=datetime.now())
             .order_by("-start_date")
             .first()
         )
