@@ -90,3 +90,148 @@ class TournamentIntegrationTest(TransactionTestCase):
         self.assertContains(response, "6")
         self.assertContains(response, "4")
         self.assertContains(response, "3")
+
+    def test_retirement_integration_flow(self):
+        """Test complete retirement flow including display"""
+        # Ensure no other ONGOING tournaments exist
+        Tournament.objects.filter(status='ONGOING').delete()
+
+        # Create tournament setup
+        tournament = Tournament.objects.create(
+            name="Retirement Test Tournament",
+            start_date=date.today(),
+            status="ONGOING"
+        )
+
+        group = Group.objects.create(name="Test Group")
+        tg = TournamentGroup.objects.create(tournament=tournament, group=group)
+
+        # Create players and teams
+        players = [
+            Player.objects.create(first_name=f"Player{i+1}", last_name=f"Last{i+1}")
+            for i in range(6)
+        ]
+
+        team1 = Team.objects.create(
+            player1=players[0], player2=players[1],
+            tournament_group=tg, rank=1
+        )
+        team2 = Team.objects.create(
+            player1=players[2], player2=players[3],
+            tournament_group=tg, rank=2
+        )
+        team3 = Team.objects.create(
+            player1=players[4], player2=players[5],
+            tournament_group=tg, rank=3
+        )
+
+        # Create normal match
+        normal_match = Match.objects.create(
+            tournament=tournament,
+            team1=team1, team2=team2,
+            set1_team1=6, set1_team2=4,
+            set2_team1=6, set2_team2=3
+        )
+
+        # Create retirement match - team3 retired, so team2 wins
+        retirement_match = Match.objects.create(
+            tournament=tournament,
+            team1=team2, team2=team3,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            retired_team='team2'  # team2 is the retired team position (actually team3 retired)
+        )
+
+        # Test that retirement match has correct score
+        self.assertEqual(retirement_match.get_score(), "4-1")  # team2 wins because team3 retired
+
+        # Test tournament grid view includes retirement
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+        # Check that retired marker is displayed
+        self.assertContains(response, "(Retired)")
+
+        # Verify the match data in context to ensure correct winner determination
+        context_data = response.context
+        group_data = context_data['group_data'][0]
+        matches = group_data['matches']
+
+        # Find the retirement match
+        retirement_match_data = next(
+            (m for m in matches if m['retired_team'] == 'team2'), None
+        )
+        self.assertIsNotNone(retirement_match_data)
+
+        # Verify that team1 (the non-retired team) is marked as the winner
+        self.assertEqual(retirement_match_data['match_winner'], 'team1')  # team1 wins because team2 retired
+
+        # Check that both normal and retirement matches are included
+        self.assertContains(response, "Test Group")
+        for player in players:
+            self.assertContains(response, player.first_name)
+
+    def test_retirement_standings_calculation(self):
+        """Test that retirement matches are correctly included in standings"""
+        # Ensure no other ONGOING tournaments exist
+        Tournament.objects.filter(status='ONGOING').delete()
+
+        tournament = Tournament.objects.create(
+            name="Retirement Standings Test",
+            start_date=date.today(),
+            status="ONGOING"
+        )
+
+        group = Group.objects.create(name="Standings Group")
+        tg = TournamentGroup.objects.create(tournament=tournament, group=group)
+
+        # Create teams
+        players = [
+            Player.objects.create(first_name=f"Player{i+1}", last_name=f"Last{i+1}")
+            for i in range(6)
+        ]
+
+        team1 = Team.objects.create(
+            player1=players[0], player2=players[1],
+            tournament_group=tg, rank=1
+        )
+        team2 = Team.objects.create(
+            player1=players[2], player2=players[3],
+            tournament_group=tg, rank=2
+        )
+        team3 = Team.objects.create(
+            player1=players[4], player2=players[5],
+            tournament_group=tg, rank=3
+        )
+
+        # Team1 beats Team2 normally
+        Match.objects.create(
+            tournament=tournament,
+            team1=team1, team2=team2,
+            set1_team1=6, set1_team2=4,
+            set2_team1=6, set2_team2=3
+        )
+
+        # Team1 beats Team3 because Team3 retired
+        Match.objects.create(
+            tournament=tournament,
+            team1=team1, team2=team3,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            retired_team='team2'  # team3 retired (team2 position)
+        )
+
+        # Test standings calculation
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+        # Team1 should have highest points (4 + 4 = 8 points)
+        # Team2 should have 1 point (lost to team1)
+        # Team3 should have 1 point (lost by retirement to team1)
+        context_data = response.context
+        group_data = context_data['group_data'][0]
+        standings = group_data['standings']
+
+        # Team1 should be first with 8 points
+        self.assertEqual(standings[0]['team'], team1)
+        self.assertEqual(standings[0]['total_points'], 8)

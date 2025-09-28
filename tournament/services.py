@@ -32,9 +32,9 @@ class MatchResultService:
     def get_match_result(self, match: Match) -> Dict[str, MatchResult]:
         """Calculate comprehensive match result"""
         sets = self._get_sets(match)
-        sets_won = self._calculate_sets_won(sets)
+        sets_won = self._calculate_sets_won(sets, match)
         winner = self._determine_winner(sets_won, match)
-        points = self._calculate_points(sets_won)
+        points = self._calculate_points(sets_won, match)
         games = self._calculate_games(sets)
 
         return {
@@ -55,8 +55,14 @@ class MatchResultService:
             sets.append((match.set3_team1, match.set3_team2))
         return sets
 
-    def _calculate_sets_won(self, sets: List[tuple]) -> Dict[str, int]:
+    def _calculate_sets_won(self, sets: List[tuple], match: Match = None) -> Dict[str, int]:
         """Calculate sets won by each team"""
+        # Handle retirement matches - the non-retired team gets 2 sets
+        if match and match.retired_team == 'team1':
+            return {"team1": 0, "team2": 2}  # team2 wins (team1 retired)
+        elif match and match.retired_team == 'team2':
+            return {"team1": 2, "team2": 0}  # team1 wins (team2 retired)
+
         team1_sets = sum(1 for s in sets if s[0] > s[1])
         team2_sets = sum(1 for s in sets if s[1] > s[0])
         return {"team1": team1_sets, "team2": team2_sets}
@@ -65,14 +71,26 @@ class MatchResultService:
         self, sets_won: Dict[str, int], match: Match
     ) -> Optional[Team]:
         """Determine match winner"""
+        # Handle retirement matches - the non-retired team wins
+        if match.retired_team == 'team1':
+            return match.team2  # team2 wins because team1 retired
+        elif match.retired_team == 'team2':
+            return match.team1  # team1 wins because team2 retired
+
         if sets_won["team1"] > sets_won["team2"]:
             return match.team1
         elif sets_won["team2"] > sets_won["team1"]:
             return match.team2
         return None
 
-    def _calculate_points(self, sets_won: Dict[str, int]) -> Dict[str, int]:
+    def _calculate_points(self, sets_won: Dict[str, int], match: Match = None) -> Dict[str, int]:
         """Calculate points for each team"""
+        # Handle retirement matches - the non-retired team gets win points
+        if match and match.retired_team == 'team1':
+            return {"team1": 1, "team2": 4}  # team2 wins (team1 retired)
+        elif match and match.retired_team == 'team2':
+            return {"team1": 4, "team2": 1}  # team1 wins (team2 retired)
+
         # Base point for playing
         points = {"team1": 1, "team2": 1}
 
@@ -291,18 +309,27 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 set1_winner=Case(
+                    # For retirement matches, no set winners (avoid highlighting scores)
+                    When(retired_team__isnull=False, then=Value("none")),
+                    # Normal set winner logic
                     When(set1_team1__gt=F("set1_team2"), then=Value("team1")),
                     When(set1_team2__gt=F("set1_team1"), then=Value("team2")),
                     default=Value("tie"),
                     output_field=CharField(),
                 ),
                 set2_winner=Case(
+                    # For retirement matches, no set winners (avoid highlighting scores)
+                    When(retired_team__isnull=False, then=Value("none")),
+                    # Normal set winner logic
                     When(set2_team1__gt=F("set2_team2"), then=Value("team1")),
                     When(set2_team2__gt=F("set2_team1"), then=Value("team2")),
                     default=Value("tie"),
                     output_field=CharField(),
                 ),
                 set3_winner=Case(
+                    # For retirement matches, no set winners (avoid highlighting scores)
+                    When(retired_team__isnull=False, then=Value("none")),
+                    # Normal set winner logic
                     When(set3_team1__gt=F("set3_team2"), then=Value("team1")),
                     When(set3_team2__gt=F("set3_team1"), then=Value("team2")),
                     When(set3_team1__isnull=True, then=Value("not_played")),
@@ -310,38 +337,56 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 sets_won_team1=Case(
-                    When(set1_team1__gt=F("set1_team2"), then=1),
-                    default=0,
-                    output_field=IntegerField(),
-                )
-                + Case(
-                    When(set2_team1__gt=F("set2_team2"), then=1),
-                    default=0,
-                    output_field=IntegerField(),
-                )
-                + Case(
-                    When(set3_team1__gt=F("set3_team2"), then=1),
-                    default=0,
+                    # For retirement matches, winner gets 2 sets, loser gets 0
+                    When(retired_team="team2", then=2),  # team2 retired, team1 wins
+                    When(retired_team="team1", then=0),  # team1 retired, team1 loses
+                    # Normal set counting logic
+                    default=Case(
+                        When(set1_team1__gt=F("set1_team2"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                    + Case(
+                        When(set2_team1__gt=F("set2_team2"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                    + Case(
+                        When(set3_team1__gt=F("set3_team2"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    ),
                     output_field=IntegerField(),
                 ),
                 sets_won_team2=Case(
-                    When(set1_team2__gt=F("set1_team1"), then=1),
-                    default=0,
-                    output_field=IntegerField(),
-                )
-                + Case(
-                    When(set2_team2__gt=F("set2_team1"), then=1),
-                    default=0,
-                    output_field=IntegerField(),
-                )
-                + Case(
-                    When(set3_team2__gt=F("set3_team1"), then=1),
-                    default=0,
+                    # For retirement matches, winner gets 2 sets, loser gets 0
+                    When(retired_team="team1", then=2),  # team1 retired, team2 wins
+                    When(retired_team="team2", then=0),  # team2 retired, team2 loses
+                    # Normal set counting logic
+                    default=Case(
+                        When(set1_team2__gt=F("set1_team1"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                    + Case(
+                        When(set2_team2__gt=F("set2_team1"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    )
+                    + Case(
+                        When(set3_team2__gt=F("set3_team1"), then=1),
+                        default=0,
+                        output_field=IntegerField(),
+                    ),
                     output_field=IntegerField(),
                 ),
             )
             .annotate(
                 match_winner=Case(
+                    # Handle retirement - the non-retired team wins
+                    When(retired_team="team1", then=Value("team2")),  # team1 retired, team2 wins
+                    When(retired_team="team2", then=Value("team1")),  # team2 retired, team1 wins
+                    # Normal match logic based on sets
                     When(sets_won_team1__gt=F("sets_won_team2"), then=Value("team1")),
                     When(sets_won_team2__gt=F("sets_won_team1"), then=Value("team2")),
                     default=Value("tie"),
@@ -365,5 +410,6 @@ class TournamentGridBuilder:
                 "date_played",
                 "sets_won_team1",
                 "sets_won_team2",
+                "retired_team",
             )
         )
