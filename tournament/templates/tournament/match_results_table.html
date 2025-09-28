@@ -31,7 +31,12 @@
     <tbody>
         <tr>
             <td class="py-2 px-4 result-column">
-                <div class="{% if match.match_winner == 'team1' %}font-bold{% endif %}">{{ match.team1_name }}</div>
+                <div class="{% if match.match_winner == 'team1' %}font-bold{% endif %}">
+                    {{ match.team1_name }}
+                    {% if match.retired_team == 'team1' %}
+                        <span class="text-xs text-red-600 font-semibold ml-2">(Retired)</span>
+                    {% endif %}
+                </div>
             </td>
             <td class="py-2 px-4 text-center score-column"><span
                     class="{% if match.set1_winner == 'team1' %}font-bold{% endif %}">{{ match.set1_team1 }}</span></td>
@@ -51,7 +56,12 @@
         </tr>
         <tr>
             <td class="py-2 px-4 result-column">
-                <div class="{% if match.match_winner == 'team2' %}font-bold{% endif %}">{{ match.team2_name }}</div>
+                <div class="{% if match.match_winner == 'team2' %}font-bold{% endif %}">
+                    {{ match.team2_name }}
+                    {% if match.retired_team == 'team2' %}
+                        <span class="text-xs text-red-600 font-semibold ml-2">(Retired)</span>
+                    {% endif %}
+                </div>
             </td>
             <td class="py-2 px-4 text-center score-column"><span
                     class="{% if match.set1_winner == 'team2' %}font-bold{% endif %}">{{ match.set1_team2 }}</span></td>

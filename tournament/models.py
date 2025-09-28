@@ -91,6 +91,12 @@ class Team(models.Model):
 
 
 class Match(models.Model):
+    RETIREMENT_CHOICES = [
+        (None, 'No retirement'),
+        ('team1', 'Team 1 retired'),
+        ('team2', 'Team 2 retired'),
+    ]
+
     tournament = models.ForeignKey(
         Tournament,
         related_name="matches",
@@ -109,6 +115,13 @@ class Match(models.Model):
     set3_team1 = models.IntegerField(null=True, blank=True)
     set3_team2 = models.IntegerField(null=True, blank=True)
     date_played = models.DateField(null=True, blank=True)
+    retired_team = models.CharField(
+        max_length=5,
+        choices=RETIREMENT_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Indicates which team retired from the match due to injury"
+    )
 
     def clean(self):
         if self.team1.tournament_group != self.team2.tournament_group:
@@ -123,6 +136,10 @@ class Match(models.Model):
                 raise ValidationError("Match cannot be played before tournament start date")
             if self.tournament.end_date and self.date_played > self.tournament.end_date:
                 raise ValidationError("Match cannot be played after tournament end date")
+
+        # Skip score validation for matches with retirement
+        if self.retired_team:
+            return
 
         sets = [(self.set1_team1, self.set1_team2), (self.set2_team1, self.set2_team2)]
         if self.set3_team1 is not None and self.set3_team2 is not None:
@@ -145,6 +162,12 @@ class Match(models.Model):
         return f"{self.team1} vs {self.team2} ({self.tournament})"
 
     def get_score(self):
+        # Handle retirement matches - the non-retired team wins
+        if self.retired_team == 'team1':
+            return "1-4"  # team2 wins (team1 retired)
+        elif self.retired_team == 'team2':
+            return "4-1"  # team1 wins (team2 retired)
+
         sets = [(self.set1_team1, self.set1_team2), (self.set2_team1, self.set2_team2)]
         if self.set3_team1 is not None and self.set3_team2 is not None:
             sets.append((self.set3_team1, self.set3_team2))
