@@ -41,6 +41,9 @@ class TournamentGridView(TemplateView):
         if not tournament:
             return context
 
+        # Pass tournament object for header and navigation
+        context["tournament"] = tournament
+
         # Use service to build grid data
         grid_builder = TournamentGridBuilder()
         context["group_data"] = grid_builder.build_grid_data(tournament)

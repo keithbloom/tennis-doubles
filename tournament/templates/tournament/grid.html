@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="bg-slate-50 container mx-auto">
-    {% header %}
+    {% include "components/header.html" with tournament=tournament %}
     <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto p-4"
         x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
         
