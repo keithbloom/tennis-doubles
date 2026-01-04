@@ -40,6 +40,9 @@ module.exports = {
         "custom-badge-1-9": colors.rose[50],
         "tab-badge-0": colors.blue[100],
         "tab-badge-1": "#fef2f2",
+        "tab-badge-2": colors.green[100],
+        "tab-badge-3": colors.purple[100],
+        "tab-badge-4": colors.amber[100],
       },
       fontFamily: {
         monofett: ["Monofett", "sans-serif"],
@@ -76,6 +79,9 @@ module.exports = {
     "bg-custom-badge-1-9",
     "bg-tab-badge-0",
     "bg-tab-badge-1",
+    "bg-tab-badge-2",
+    "bg-tab-badge-3",
+    "bg-tab-badge-4",
     ],
   plugins: [],
 };
