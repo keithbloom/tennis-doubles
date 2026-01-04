@@ -12,9 +12,14 @@ class MatchResultServiceTest(TestCase):
             start_date=date.today()
         )
         self.group = Group.objects.create(name="Test Group")
+        self.group2 = Group.objects.create(name="Test Group 2")
         self.tournament_group = TournamentGroup.objects.create(
             tournament=self.tournament,
             group=self.group
+        )
+        TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=self.group2
         )
         
         # Create teams
@@ -124,9 +129,14 @@ class StandingsCalculatorTest(TestCase):
             start_date=date.today()
         )
         self.group = Group.objects.create(name="Test Group")
+        self.group2 = Group.objects.create(name="Test Group 2")
         self.tournament_group = TournamentGroup.objects.create(
             tournament=self.tournament,
             group=self.group
+        )
+        TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=self.group2
         )
 
     def test_empty_standings(self):

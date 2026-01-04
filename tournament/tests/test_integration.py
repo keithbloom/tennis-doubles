@@ -104,7 +104,9 @@ class TournamentIntegrationTest(TransactionTestCase):
         )
 
         group = Group.objects.create(name="Test Group")
+        group2 = Group.objects.create(name="Test Group 2")
         tg = TournamentGroup.objects.create(tournament=tournament, group=group)
+        TournamentGroup.objects.create(tournament=tournament, group=group2)
 
         # Create players and teams
         players = [
@@ -183,7 +185,9 @@ class TournamentIntegrationTest(TransactionTestCase):
         )
 
         group = Group.objects.create(name="Standings Group")
+        group2 = Group.objects.create(name="Standings Group 2")
         tg = TournamentGroup.objects.create(tournament=tournament, group=group)
+        TournamentGroup.objects.create(tournament=tournament, group=group2)
 
         # Create teams
         players = [

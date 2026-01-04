@@ -13,9 +13,14 @@ class TournamentGridViewTest(TestCase):
             status="ONGOING"
         )
         self.group = Group.objects.create(name="Group A")
+        self.group2 = Group.objects.create(name="Group B")
         self.tournament_group = TournamentGroup.objects.create(
             tournament=self.tournament,
             group=self.group
+        )
+        TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=self.group2
         )
         
         # Create players
@@ -72,14 +77,21 @@ class TournamentGridViewTest(TestCase):
 
     def test_no_ongoing_tournament(self):
         """Test behavior when no ongoing tournament exists"""
-        # Clear any other tournaments
-        Tournament.objects.all().delete()
-        
-        # Create and complete our test tournament
-        self.tournament.status = "COMPLETED"
-        self.tournament.end_date = date.today()
-        self.tournament.save()
-        
+        # Delete all ongoing tournaments
+        Tournament.objects.filter(status='ONGOING').delete()
+
+        # Create a completed tournament
+        group1 = Group.objects.create(name="Completed Group 1")
+        group2 = Group.objects.create(name="Completed Group 2")
+        completed_tournament = Tournament.objects.create(
+            name="Completed Tournament",
+            start_date=date.today(),
+            status="COMPLETED",
+            end_date=date.today()
+        )
+        TournamentGroup.objects.create(tournament=completed_tournament, group=group1)
+        TournamentGroup.objects.create(tournament=completed_tournament, group=group2)
+
         response = self.client.get(reverse('tournament_grid'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'tournament/no_tournament.html')
@@ -97,9 +109,14 @@ class TeamsAPIViewTest(TestCase):
             start_date=date.today()
         )
         self.group = Group.objects.create(name="API Group")
+        self.group2 = Group.objects.create(name="API Group 2")
         self.tournament_group = TournamentGroup.objects.create(
             tournament=self.tournament,
             group=self.group
+        )
+        TournamentGroup.objects.create(
+            tournament=self.tournament,
+            group=self.group2
         )
 
     def test_teams_api_requires_staff(self):
