@@ -96,6 +96,22 @@ class TournamentGridViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'tournament/no_tournament.html')
 
+    def test_tournament_object_in_context(self):
+        """Test that tournament object is passed to context"""
+        response = self.client.get(reverse('tournament_grid'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('tournament', response.context)
+        self.assertEqual(response.context['tournament'], self.tournament)
+
+    def test_tournament_name_in_header(self):
+        """Test that tournament name appears in the page header"""
+        response = self.client.get(reverse('tournament_grid'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.tournament.name)
+        # Verify it's in the header context, not just somewhere on the page
+        self.assertIn('tournament', response.context)
+        self.assertEqual(response.context['tournament'].name, "Test Tournament")
+
 class TeamsAPIViewTest(TestCase):
     def setUp(self):
         self.client = Client()
