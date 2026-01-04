@@ -2,19 +2,28 @@ from django.contrib import admin
 from django import forms
 from .models import Tournament, Group, TournamentGroup, Player, Team, Match
 
+class TournamentGroupInline(admin.TabularInline):
+    model = TournamentGroup
+    extra = 5
+    min_num = 2
+    max_num = 5
+    validate_min = True
+    validate_max = True
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "group":
+            kwargs["queryset"] = Group.objects.all().order_by('name')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'status']
     list_filter = ['status']
+    inlines = [TournamentGroupInline]
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name']
-
-@admin.register(TournamentGroup)
-class TournamentGroupAdmin(admin.ModelAdmin):
-    list_display = ['tournament', 'group']
-    list_filter = ['tournament', 'group']
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
