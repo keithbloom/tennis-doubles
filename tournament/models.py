@@ -21,9 +21,27 @@ class Tournament(models.Model):
     def clean(self):
         if self.end_date and self.end_date < self.start_date:
             raise ValidationError("End date must be after start date")
-        
+
         if self.status == 'COMPLETED' and not self.end_date:
             raise ValidationError("End date must be set when tournament is completed")
+
+        # Validate group count if tournament is saved (has an ID)
+        if self.pk:
+            self.validate_group_count()
+
+    def validate_group_count(self):
+        """Validate that tournament has between 2 and 5 groups"""
+        group_count = self.tournamentgroup_set.count()
+
+        if group_count < 2:
+            raise ValidationError(
+                "A tournament must have at least 2 groups."
+            )
+
+        if group_count > 5:
+            raise ValidationError(
+                "A tournament can have a maximum of 5 groups."
+            )
 
     def save(self, *args, **kwargs):
         self.clean()

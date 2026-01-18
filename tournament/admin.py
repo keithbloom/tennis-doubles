@@ -2,31 +2,51 @@ from django.contrib import admin
 from django import forms
 from .models import Tournament, Group, TournamentGroup, Player, Team, Match
 
+class TournamentGroupInline(admin.TabularInline):
+    model = TournamentGroup
+    extra = 5
+    min_num = 2
+    max_num = 5
+    validate_min = True
+    validate_max = True
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "group":
+            kwargs["queryset"] = Group.objects.all().order_by('name')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_date', 'end_date', 'status']
     list_filter = ['status']
+    inlines = [TournamentGroupInline]
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['name']
-
-@admin.register(TournamentGroup)
-class TournamentGroupAdmin(admin.ModelAdmin):
-    list_display = ['tournament', 'group']
-    list_filter = ['tournament', 'group']
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ['first_name', 'last_name']
     search_fields = ['first_name', 'last_name']
 
+class TeamAdminForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ['player1', 'player2', 'tournament_group', 'rank', 'is_withdrawn']
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
+    form = TeamAdminForm
     list_display = ['__str__', 'player1', 'player2', 'get_group', 'get_tournament', 'rank']
     list_filter = ['tournament_group__group', 'tournament_group__tournament']
-    search_fields = ['player1__first_name', 'player1__last_name', 
+    search_fields = ['player1__first_name', 'player1__last_name',
                     'player2__first_name', 'player2__last_name']
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name in ["player1", "player2"]:
+            kwargs["queryset"] = Player.objects.all().order_by('last_name', 'first_name')
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_group(self, obj):
         return obj.tournament_group.group
@@ -37,6 +57,9 @@ class TeamAdmin(admin.ModelAdmin):
         return obj.tournament_group.tournament
     get_tournament.short_description = 'Tournament'
     get_tournament.admin_order_field = 'tournament_group__tournament'
+
+    class Media:
+        js = ('js/team_admin.js',)
 
 class MatchAdminForm(forms.ModelForm):
     class Meta:

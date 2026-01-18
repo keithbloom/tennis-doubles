@@ -38,13 +38,18 @@ class CustomTagsTest(TestCase):
         
         from tournament.models import Team, Tournament, Group, TournamentGroup
         tournament = Tournament.objects.create(
-            name="Test", 
+            name="Test",
             start_date="2024-01-01"
         )
         group = Group.objects.create(name="Test Group")
+        group2 = Group.objects.create(name="Test Group 2")
         tournament_group = TournamentGroup.objects.create(
             tournament=tournament,
             group=group
+        )
+        TournamentGroup.objects.create(
+            tournament=tournament,
+            group=group2
         )
         team = Team.objects.create(
             player1=player1,

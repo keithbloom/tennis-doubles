@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from tournament.views import tournament_grid
+from tournament.views import TournamentGridView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/tournament/', include('tournament.urls')),
-    path('', tournament_grid, name='tournament_grid'),
+    path('', TournamentGridView.as_view(), name='tournament_grid'),
+    path('api/tournament/', include('tournament.api_urls')),
+    path('', include('tournament.urls')),
 ]
