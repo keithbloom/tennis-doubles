@@ -5,15 +5,6 @@
 <div class="bg-slate-50 container mx-auto">
     {% include "components/header.html" with tournament=tournament %}
 
-    <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto px-4 pt-4">
-        <div class="flex justify-between items-center mb-4">
-            <a href="{% url 'tournament_history' %}"
-               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                View All Tournaments
-            </a>
-        </div>
-    </div>
-
     <div class="w-full max-w-3xl md:max-w-5xl lg:max-w-6xl mx-auto p-4"
         x-data="{ activeTab: '{{ group_data.0.group.name }}' }">
 

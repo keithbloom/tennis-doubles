@@ -144,3 +144,17 @@ def teams_by_tournament(request):
     api = TeamAPI()
     teams_data = api.get_teams_by_tournament(tournament_id)
     return JsonResponse(teams_data, safe=False)
+
+
+@staff_member_required
+def previous_partner(request):
+    """API endpoint for getting a player's previous partner"""
+    player_id = request.GET.get("player_id")
+
+    if not player_id:
+        return JsonResponse({"error": "player_id required"}, status=400)
+
+    api = TeamAPI()
+    partner_id = api.get_previous_partner(int(player_id))
+
+    return JsonResponse({"partner_id": partner_id})

@@ -21,5 +21,6 @@ from tournament.views import TournamentGridView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TournamentGridView.as_view(), name='tournament_grid'),
+    path('api/tournament/', include('tournament.api_urls')),
     path('', include('tournament.urls')),
 ]
