@@ -136,12 +136,12 @@ class TeamsAPIViewTest(TestCase):
         )
 
     def test_teams_api_requires_staff(self):
-        response = self.client.get(reverse('teams_by_tournament'))
+        response = self.client.get(reverse('api_teams_by_tournament'))
         self.assertEqual(response.status_code, 302)  # Redirect to login
 
     def test_teams_api_returns_grouped_teams(self):
         self.client.login(username='admin', password='password')
-        
+
         # Create test data
         player1 = Player.objects.create(first_name="Alice", last_name="A")
         player2 = Player.objects.create(first_name="Bob", last_name="B")
@@ -150,9 +150,9 @@ class TeamsAPIViewTest(TestCase):
             player2=player2,
             tournament_group=self.tournament_group
         )
-        
+
         response = self.client.get(
-            reverse('teams_by_tournament'),
+            reverse('api_teams_by_tournament'),
             {'tournament': self.tournament.id}
         )
         self.assertEqual(response.status_code, 200)

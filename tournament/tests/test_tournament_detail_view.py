@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from datetime import date
 from tournament.models import Tournament, Group, TournamentGroup
+import logging
 
 
 class TournamentDetailViewTest(TestCase):
@@ -42,8 +43,15 @@ class TournamentDetailViewTest(TestCase):
 
     def test_tournament_detail_view_404_for_invalid_id(self):
         """View should return 404 for non-existent tournament"""
-        response = self.client.get(
-            reverse('tournament_detail', args=[9999])
-        )
+        # Suppress the expected "Not Found" warning
+        logger = logging.getLogger('django.request')
+        previous_level = logger.level
+        logger.setLevel(logging.ERROR)
 
-        self.assertEqual(response.status_code, 404)
+        try:
+            response = self.client.get(
+                reverse('tournament_detail', args=[9999])
+            )
+            self.assertEqual(response.status_code, 404)
+        finally:
+            logger.setLevel(previous_level)
