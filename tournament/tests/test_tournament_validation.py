@@ -9,7 +9,7 @@ class TournamentGroupValidationTest(TestCase):
         """Create test groups and tournament"""
         self.groups = [
             Group.objects.create(name=f'Group {i}')
-            for i in range(6)
+            for i in range(8)
         ]
         self.tournament = Tournament.objects.create(
             name='Test Tournament',
@@ -54,9 +54,20 @@ class TournamentGroupValidationTest(TestCase):
         # Should not raise
         self.tournament.validate_group_count()
 
-    def test_tournament_with_six_groups_fails(self):
-        """Tournament with 6 groups should fail validation"""
-        for i in range(6):
+    def test_tournament_with_seven_groups_passes(self):
+        """Tournament with 7 groups should pass"""
+        for i in range(7):
+            TournamentGroup.objects.create(
+                tournament=self.tournament,
+                group=self.groups[i]
+            )
+
+        # Should not raise
+        self.tournament.validate_group_count()
+
+    def test_tournament_with_eight_groups_fails(self):
+        """Tournament with 8 groups should fail validation"""
+        for i in range(8):
             TournamentGroup.objects.create(
                 tournament=self.tournament,
                 group=self.groups[i]
@@ -65,4 +76,4 @@ class TournamentGroupValidationTest(TestCase):
         with self.assertRaises(ValidationError) as context:
             self.tournament.validate_group_count()
 
-        self.assertIn('maximum of 5 groups', str(context.exception))
+        self.assertIn('maximum of 7 groups', str(context.exception))

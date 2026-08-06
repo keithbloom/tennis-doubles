@@ -30,7 +30,7 @@ class Tournament(models.Model):
             self.validate_group_count()
 
     def validate_group_count(self):
-        """Validate that tournament has between 2 and 5 groups"""
+        """Validate that tournament has between 2 and 7 groups"""
         group_count = self.tournamentgroup_set.count()
 
         if group_count < 2:
@@ -38,9 +38,9 @@ class Tournament(models.Model):
                 "A tournament must have at least 2 groups."
             )
 
-        if group_count > 5:
+        if group_count > 7:
             raise ValidationError(
-                "A tournament can have a maximum of 5 groups."
+                "A tournament can have a maximum of 7 groups."
             )
 
     def save(self, *args, **kwargs):
