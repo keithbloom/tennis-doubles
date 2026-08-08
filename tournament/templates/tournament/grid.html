@@ -10,14 +10,7 @@
 
         <!-- Group nav -->
         {% with group_total=group_data|length %}
-        <div class="grid grid-cols-4 gap-2 mb-4
-            {% if group_total == 2 %}sm:grid-cols-2
-            {% elif group_total == 3 %}sm:grid-cols-3
-            {% elif group_total == 4 %}sm:grid-cols-4
-            {% elif group_total == 5 %}sm:grid-cols-5
-            {% elif group_total == 6 %}sm:grid-cols-6
-            {% else %}sm:grid-cols-7
-            {% endif %}">
+        <div class="grid grid-cols-4 gap-2 mb-4 {{ group_total|group_nav_sm_cols }}">
             {% for data in group_data %}
             {% with group_index=forloop.counter0 %}
             <button @click="activeTab = '{{ data.group.name }}'"

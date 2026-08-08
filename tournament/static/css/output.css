@@ -705,8 +705,20 @@ video {
   min-height: 100vh;
 }
 
+.w-4\/5 {
+  width: 80%;
+}
+
 .w-5 {
   width: 1.25rem;
+}
+
+.w-\[25px\] {
+  width: 25px;
+}
+
+.w-\[40px\] {
+  width: 40px;
 }
 
 .w-full {

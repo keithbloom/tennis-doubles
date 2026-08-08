@@ -26,3 +26,19 @@ def get_item(list_or_dict, index):
 @register.filter
 def sub(a,b):
     return a - b
+
+GROUP_NAV_SM_COLS_CLASS = {
+    2: "sm:grid-cols-2",
+    3: "sm:grid-cols-3",
+    4: "sm:grid-cols-4",
+    5: "sm:grid-cols-5",
+    6: "sm:grid-cols-6",
+}
+
+@register.filter
+def group_nav_sm_cols(group_total):
+    """
+    Maps the number of tournament groups to the Tailwind class controlling
+    how many columns the group nav uses at the `sm` breakpoint.
+    """
+    return GROUP_NAV_SM_COLS_CLASS.get(group_total, "sm:grid-cols-7")
