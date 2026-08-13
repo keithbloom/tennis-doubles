@@ -15,7 +15,7 @@
             {% with group_index=forloop.counter0 %}
             <button @click="activeTab = '{{ data.group.name }}'"
                 class="rounded-xl px-2 py-3 text-center text-xs sm:text-sm font-semibold shadow-sm border-2 transition"
-                :class="activeTab === '{{ data.group.name }}' ? 'border-tab-badge-solid-{{ group_index }} bg-tab-badge-{{ group_index }} text-gray-900' : 'border-transparent bg-white text-gray-500 hover:bg-gray-50'">
+                :class="activeTab === '{{ data.group.name }}' ? 'border-tab-badge-{{ group_index }} bg-tab-badge-{{ group_index }} {{ group_index|tab_badge_text_class }}' : 'border-transparent bg-white text-gray-500 hover:bg-gray-50'">
                 {{ data.group.name }}
             </button>
             {% endwith %}

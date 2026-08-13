@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = require('tailwindcss/colors')
 module.exports = {
   content: ["./tournament/templates/**/*.html", "./tournament/static/**/*.js"],
   theme: {
@@ -19,22 +18,17 @@ module.exports = {
         "custom-pink-5": "#f36059",
         "custom-pink-6": "#f05c77",
 
-        // Group accent colors — 7 groups. Pastel for backgrounds/tab fills,
-        // "solid" for borders/active-state accents.
-        "tab-badge-0": colors.blue[100],
-        "tab-badge-1": colors.rose[100],
-        "tab-badge-2": colors.teal[100],
-        "tab-badge-3": colors.amber[100],
-        "tab-badge-4": colors.violet[100],
-        "tab-badge-5": colors.lime[100],
-        "tab-badge-6": colors.cyan[100],
-        "tab-badge-solid-0": colors.blue[500],
-        "tab-badge-solid-1": colors.rose[500],
-        "tab-badge-solid-2": colors.teal[500],
-        "tab-badge-solid-3": colors.amber[500],
-        "tab-badge-solid-4": colors.violet[500],
-        "tab-badge-solid-5": colors.lime[600],
-        "tab-badge-solid-6": colors.cyan[500],
+        // Group accent colors — 7 groups, used directly for tab/border/badge
+        // backgrounds (no separate darker "solid" accent — text color is
+        // chosen per-swatch instead, see tab_badge_text_class in
+        // custom_tags.py, to keep contrast readable).
+        "tab-badge-0": "#65ccb8",
+        "tab-badge-1": "#57ba98",
+        "tab-badge-2": "#3b945e",
+        "tab-badge-3": "#31708e",
+        "tab-badge-4": "#5085a5",
+        "tab-badge-5": "#8fc1e3",
+        "tab-badge-6": "#3aafa9",
       },
       fontFamily: {
         monofett: ["Monofett", "sans-serif"],
@@ -53,10 +47,9 @@ module.exports = {
       // templates has to be listed explicitly; Tailwind can't statically see
       // classes built from a Django {{ group_index }} interpolation.
       "bg-tab-badge-0", "bg-tab-badge-1", "bg-tab-badge-2", "bg-tab-badge-3", "bg-tab-badge-4", "bg-tab-badge-5", "bg-tab-badge-6",
+      "border-tab-badge-0", "border-tab-badge-1", "border-tab-badge-2", "border-tab-badge-3", "border-tab-badge-4", "border-tab-badge-5", "border-tab-badge-6",
       "border-l-tab-badge-0", "border-l-tab-badge-1", "border-l-tab-badge-2", "border-l-tab-badge-3", "border-l-tab-badge-4", "border-l-tab-badge-5", "border-l-tab-badge-6",
       "border-b-tab-badge-0", "border-b-tab-badge-1", "border-b-tab-badge-2", "border-b-tab-badge-3", "border-b-tab-badge-4", "border-b-tab-badge-5", "border-b-tab-badge-6",
-      "border-tab-badge-solid-0", "border-tab-badge-solid-1", "border-tab-badge-solid-2", "border-tab-badge-solid-3", "border-tab-badge-solid-4", "border-tab-badge-solid-5", "border-tab-badge-solid-6",
-      "border-l-tab-badge-solid-0", "border-l-tab-badge-solid-1", "border-l-tab-badge-solid-2", "border-l-tab-badge-solid-3", "border-l-tab-badge-solid-4", "border-l-tab-badge-solid-5", "border-l-tab-badge-solid-6",
       // Group nav column count (2-7) — built from a Django filter
       // (custom_tags.group_nav_sm_cols), so Tailwind can't see it statically.
       "sm:grid-cols-2", "sm:grid-cols-3", "sm:grid-cols-4", "sm:grid-cols-5", "sm:grid-cols-6", "sm:grid-cols-7",

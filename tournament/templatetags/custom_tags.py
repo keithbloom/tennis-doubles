@@ -42,3 +42,16 @@ def group_nav_sm_cols(group_total):
     how many columns the group nav uses at the `sm` breakpoint.
     """
     return GROUP_NAV_SM_COLS_CLASS.get(group_total, "sm:grid-cols-7")
+
+# Indices whose tab-badge base color is dark enough that text-gray-900 fails
+# WCAG contrast against it (checked against the tab-badge palette in
+# tailwind.config.js) — those groups need light text instead.
+TAB_BADGE_DARK_INDICES = {3}
+
+@register.filter
+def tab_badge_text_class(group_index):
+    """
+    Text color class to use on top of a bg-tab-badge-{{ group_index }}
+    background, chosen for contrast against that group's badge color.
+    """
+    return "text-white" if group_index in TAB_BADGE_DARK_INDICES else "text-gray-900"

@@ -860,10 +860,6 @@ video {
   border-radius: 0.75rem;
 }
 
-.rounded-tl-lg {
-  border-top-left-radius: 0.5rem;
-}
-
 .border {
   border-width: 1px;
 }
@@ -897,39 +893,39 @@ video {
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-0 {
+.border-tab-badge-0 {
   --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+  border-color: rgb(101 204 184 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-1 {
+.border-tab-badge-1 {
   --tw-border-opacity: 1;
-  border-color: rgb(244 63 94 / var(--tw-border-opacity));
+  border-color: rgb(87 186 152 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-2 {
+.border-tab-badge-2 {
   --tw-border-opacity: 1;
-  border-color: rgb(20 184 166 / var(--tw-border-opacity));
+  border-color: rgb(59 148 94 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-3 {
+.border-tab-badge-3 {
   --tw-border-opacity: 1;
-  border-color: rgb(245 158 11 / var(--tw-border-opacity));
+  border-color: rgb(49 112 142 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-4 {
+.border-tab-badge-4 {
   --tw-border-opacity: 1;
-  border-color: rgb(139 92 246 / var(--tw-border-opacity));
+  border-color: rgb(80 133 165 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-5 {
+.border-tab-badge-5 {
   --tw-border-opacity: 1;
-  border-color: rgb(101 163 13 / var(--tw-border-opacity));
+  border-color: rgb(143 193 227 / var(--tw-border-opacity));
 }
 
-.border-tab-badge-solid-6 {
+.border-tab-badge-6 {
   --tw-border-opacity: 1;
-  border-color: rgb(6 182 212 / var(--tw-border-opacity));
+  border-color: rgb(58 175 169 / var(--tw-border-opacity));
 }
 
 .border-transparent {
@@ -938,107 +934,72 @@ video {
 
 .border-b-tab-badge-0 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(219 234 254 / var(--tw-border-opacity));
+  border-bottom-color: rgb(101 204 184 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-1 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(255 228 230 / var(--tw-border-opacity));
+  border-bottom-color: rgb(87 186 152 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-2 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(204 251 241 / var(--tw-border-opacity));
+  border-bottom-color: rgb(59 148 94 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-3 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(254 243 199 / var(--tw-border-opacity));
+  border-bottom-color: rgb(49 112 142 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-4 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(237 233 254 / var(--tw-border-opacity));
+  border-bottom-color: rgb(80 133 165 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-5 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(236 252 203 / var(--tw-border-opacity));
+  border-bottom-color: rgb(143 193 227 / var(--tw-border-opacity));
 }
 
 .border-b-tab-badge-6 {
   --tw-border-opacity: 1;
-  border-bottom-color: rgb(207 250 254 / var(--tw-border-opacity));
+  border-bottom-color: rgb(58 175 169 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-0 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(219 234 254 / var(--tw-border-opacity));
+  border-left-color: rgb(101 204 184 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-1 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(255 228 230 / var(--tw-border-opacity));
+  border-left-color: rgb(87 186 152 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-2 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(204 251 241 / var(--tw-border-opacity));
+  border-left-color: rgb(59 148 94 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-3 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(254 243 199 / var(--tw-border-opacity));
+  border-left-color: rgb(49 112 142 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-4 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(237 233 254 / var(--tw-border-opacity));
+  border-left-color: rgb(80 133 165 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-5 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(236 252 203 / var(--tw-border-opacity));
+  border-left-color: rgb(143 193 227 / var(--tw-border-opacity));
 }
 
 .border-l-tab-badge-6 {
   --tw-border-opacity: 1;
-  border-left-color: rgb(207 250 254 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-0 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(59 130 246 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-1 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(244 63 94 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-2 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(20 184 166 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-3 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(245 158 11 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-4 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(139 92 246 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-5 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(101 163 13 / var(--tw-border-opacity));
-}
-
-.border-l-tab-badge-solid-6 {
-  --tw-border-opacity: 1;
-  border-left-color: rgb(6 182 212 / var(--tw-border-opacity));
+  border-left-color: rgb(58 175 169 / var(--tw-border-opacity));
 }
 
 .bg-black {
@@ -1118,37 +1079,37 @@ video {
 
 .bg-tab-badge-0 {
   --tw-bg-opacity: 1;
-  background-color: rgb(219 234 254 / var(--tw-bg-opacity));
+  background-color: rgb(101 204 184 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-1 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 228 230 / var(--tw-bg-opacity));
+  background-color: rgb(87 186 152 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-2 {
   --tw-bg-opacity: 1;
-  background-color: rgb(204 251 241 / var(--tw-bg-opacity));
+  background-color: rgb(59 148 94 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-3 {
   --tw-bg-opacity: 1;
-  background-color: rgb(254 243 199 / var(--tw-bg-opacity));
+  background-color: rgb(49 112 142 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-4 {
   --tw-bg-opacity: 1;
-  background-color: rgb(237 233 254 / var(--tw-bg-opacity));
+  background-color: rgb(80 133 165 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-5 {
   --tw-bg-opacity: 1;
-  background-color: rgb(236 252 203 / var(--tw-bg-opacity));
+  background-color: rgb(143 193 227 / var(--tw-bg-opacity));
 }
 
 .bg-tab-badge-6 {
   --tw-bg-opacity: 1;
-  background-color: rgb(207 250 254 / var(--tw-bg-opacity));
+  background-color: rgb(58 175 169 / var(--tw-bg-opacity));
 }
 
 .bg-white {
