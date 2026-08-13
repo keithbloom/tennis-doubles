@@ -227,3 +227,4 @@ build/Release
 data/
 Scripts/
 Lib/
+local_data/

@@ -1,29 +1,27 @@
 {% load custom_tags %}
-<div class="overflow-x-auto bg-white shadow-md">
-    <table class="w-full border-collapse">
+<div class="overflow-x-auto">
+    <table class="w-full border-collapse text-sm">
         <thead>
             <tr>
-                <th class="sticky left-0 z-10 p-3 bg-white border border-slate-400"></th>
+                <th class="sticky left-0 z-10 p-2 bg-white border border-gray-200"></th>
                 {% for team in teams %}
-                {% with index=forloop.counter0 total_rows=teams|length %}
-                <th class="p-3 justify-center border text-center border-slate-400 {% if team.is_withdrawn %}bg-gray-50{% endif %}">
-                    {% team_name team index group_count=group_index total_teams=total_rows %}
+                <th class="p-2 border border-gray-200 text-center bg-white font-medium {% if team.is_withdrawn %}bg-gray-50 text-gray-400{% endif %}">
+                    {{ team.player1.first_name|slice:":4" }}/{{ team.player2.first_name|slice:":4" }}
                 </th>
-                {% endwith %}
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
             {% for row in match_grid %}
-            {% with index=forloop.counter0 name=row|first results=row|slice:"1:" total_rows=teams|length %}
+            {% with name=row|first results=row|slice:"1:" %}
             <tr>
-                <td class="sticky left-0 z-10 p-3 bg-white font-medium border border-slate-400">
-                    {% team_name team=name index=index group_count=group_index total_teams=total_rows %}
+                <td class="sticky left-0 z-10 p-2 bg-gray-50 font-medium border border-gray-200 whitespace-nowrap {% if name.is_withdrawn %}text-gray-400{% endif %}">
+                    {{ name }}
                 </td>
                 {% for cell in results %}
                 {% with team=teams|get_item:forloop.counter0 %}
-                <td class="p-3 text-center border border-slate-400 
-                    {% if cell == None %}bg-gray-100
+                <td class="p-2 text-center border border-gray-200
+                    {% if cell == None %}bg-gray-50
                     {% elif team.is_withdrawn %}bg-gray-50
                     {% endif %}">
                     {% include "components/grid_cell.html" with cell=cell team=team %}

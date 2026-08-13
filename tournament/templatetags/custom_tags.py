@@ -4,11 +4,6 @@ from django.template.loader import render_to_string
 register = template.Library()
 
 @register.simple_tag
-def team_name(team, index, group_count, total_teams):
-    
-    return render_to_string('components/team_name.html', {'player1': team.player1, 'player2': team.player2, 'index': index, 'group_index': group_count})
-
-@register.simple_tag
 def header():
     return render_to_string('components/header.html')
 
@@ -31,3 +26,32 @@ def get_item(list_or_dict, index):
 @register.filter
 def sub(a,b):
     return a - b
+
+GROUP_NAV_SM_COLS_CLASS = {
+    2: "sm:grid-cols-2",
+    3: "sm:grid-cols-3",
+    4: "sm:grid-cols-4",
+    5: "sm:grid-cols-5",
+    6: "sm:grid-cols-6",
+}
+
+@register.filter
+def group_nav_sm_cols(group_total):
+    """
+    Maps the number of tournament groups to the Tailwind class controlling
+    how many columns the group nav uses at the `sm` breakpoint.
+    """
+    return GROUP_NAV_SM_COLS_CLASS.get(group_total, "sm:grid-cols-7")
+
+# Indices whose tab-badge base color is dark enough that text-gray-900 fails
+# WCAG contrast against it (checked against the tab-badge palette in
+# tailwind.config.js) — those groups need light text instead.
+TAB_BADGE_DARK_INDICES = {3}
+
+@register.filter
+def tab_badge_text_class(group_index):
+    """
+    Text color class to use on top of a bg-tab-badge-{{ group_index }}
+    background, chosen for contrast against that group's badge color.
+    """
+    return "text-white" if group_index in TAB_BADGE_DARK_INDICES else "text-gray-900"
