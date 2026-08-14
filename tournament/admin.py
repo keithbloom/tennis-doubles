@@ -4,9 +4,9 @@ from .models import Tournament, Group, TournamentGroup, Player, Team, Match
 
 class TournamentGroupInline(admin.TabularInline):
     model = TournamentGroup
-    extra = 5
+    extra = 7
     min_num = 2
-    max_num = 5
+    max_num = 7
     validate_min = True
     validate_max = True
 
