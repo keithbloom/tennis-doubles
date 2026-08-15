@@ -48,8 +48,7 @@ module.exports = {
       // classes built from a Django {{ group_index }} interpolation.
       "bg-tab-badge-0", "bg-tab-badge-1", "bg-tab-badge-2", "bg-tab-badge-3", "bg-tab-badge-4", "bg-tab-badge-5", "bg-tab-badge-6",
       "border-tab-badge-0", "border-tab-badge-1", "border-tab-badge-2", "border-tab-badge-3", "border-tab-badge-4", "border-tab-badge-5", "border-tab-badge-6",
-      "border-l-tab-badge-0", "border-l-tab-badge-1", "border-l-tab-badge-2", "border-l-tab-badge-3", "border-l-tab-badge-4", "border-l-tab-badge-5", "border-l-tab-badge-6",
-      "border-b-tab-badge-0", "border-b-tab-badge-1", "border-b-tab-badge-2", "border-b-tab-badge-3", "border-b-tab-badge-4", "border-b-tab-badge-5", "border-b-tab-badge-6",
+      "border-t-tab-badge-0", "border-t-tab-badge-1", "border-t-tab-badge-2", "border-t-tab-badge-3", "border-t-tab-badge-4", "border-t-tab-badge-5", "border-t-tab-badge-6",
       // Group nav column count (2-7) — built from a Django filter
       // (custom_tags.group_nav_sm_cols), so Tailwind can't see it statically.
       "sm:grid-cols-2", "sm:grid-cols-3", "sm:grid-cols-4", "sm:grid-cols-5", "sm:grid-cols-6", "sm:grid-cols-7",
