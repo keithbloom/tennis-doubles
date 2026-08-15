@@ -46,7 +46,7 @@ def group_nav_sm_cols(group_total):
 # Indices whose tab-badge base color is dark enough that text-gray-900 fails
 # WCAG contrast against it (checked against the tab-badge palette in
 # tailwind.config.js) — those groups need light text instead.
-TAB_BADGE_DARK_INDICES = {3}
+TAB_BADGE_DARK_INDICES = {3, 4}
 
 @register.filter
 def tab_badge_text_class(group_index):
