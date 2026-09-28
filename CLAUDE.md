@@ -63,10 +63,10 @@ The core hierarchy: `Tournament` → `TournamentGroup` (M2M through table) → `
 - **Group**: Predefined named groups (e.g. "Group A"); reused across tournaments via `TournamentGroup`
 - **TournamentGroup**: Through table linking a tournament to a group; teams belong to this, not directly to Tournament or Group
 - **Team**: Two players in a tournament group, with an optional `rank` and `is_withdrawn` flag
-- **Match**: Belongs to a tournament, references two teams (must be in the same tournament group). Stores set scores; supports a `retired_team` field for injury retirements
+- **Match**: Belongs to a tournament, references two teams (must be in the same tournament group). Stores set scores; supports a `retired_team` field for injury retirements and a `walkover_team` field for teams that pulled out before playing
 
 ### Scoring
-Points per match: 1 point for playing + 1 per set won + 1 bonus for match winner (max 4 points). Retirement matches: winner gets 4 points, loser gets 1.
+Points per match: 1 point for playing + 1 per set won + 1 bonus for match winner (max 4 points). Retirement matches: winner gets 4 points, loser gets 1. Walkover matches: winner gets 4 points, the team that pulled out gets 0.
 
 ### Service Layer (`tournament/services.py`)
 Business logic is separated into services:

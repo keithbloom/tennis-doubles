@@ -121,6 +121,71 @@ class MatchResultServiceTest(TestCase):
         )
         self.assertEqual(match2.get_score(), "1-4")
 
+    def test_walkover_team2_gave_walkover(self):
+        # team2 pulled out, so team1 wins and team2 gets no points
+        match = Match.objects.create(
+            tournament=self.tournament,
+            team1=self.team1, team2=self.team2,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            walkover_team='team2'
+        )
+
+        service = MatchResultService()
+        result = service.get_match_result(match)
+
+        self.assertEqual(result['winner'], self.team1)
+        self.assertEqual(result['sets_won'], {'team1': 2, 'team2': 0})
+        self.assertEqual(result['points'], {'team1': 4, 'team2': 0})
+
+    def test_walkover_team1_gave_walkover(self):
+        # team1 pulled out, so team2 wins and team1 gets no points
+        match = Match.objects.create(
+            tournament=self.tournament,
+            team1=self.team1, team2=self.team2,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            walkover_team='team1'
+        )
+
+        service = MatchResultService()
+        result = service.get_match_result(match)
+
+        self.assertEqual(result['winner'], self.team2)
+        self.assertEqual(result['sets_won'], {'team1': 0, 'team2': 2})
+        self.assertEqual(result['points'], {'team1': 0, 'team2': 4})
+
+    def test_match_get_score_walkover(self):
+        match1 = Match.objects.create(
+            tournament=self.tournament,
+            team1=self.team1, team2=self.team2,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            walkover_team='team2'
+        )
+        self.assertEqual(match1.get_score(), "4-0")
+
+        match2 = Match.objects.create(
+            tournament=self.tournament,
+            team1=self.team1, team2=self.team2,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            walkover_team='team1'
+        )
+        self.assertEqual(match2.get_score(), "0-4")
+
+    def test_match_cannot_be_retirement_and_walkover(self):
+        from django.core.exceptions import ValidationError
+        with self.assertRaises(ValidationError):
+            Match.objects.create(
+                tournament=self.tournament,
+                team1=self.team1, team2=self.team2,
+                set1_team1=0, set1_team2=0,
+                set2_team1=0, set2_team2=0,
+                retired_team='team1',
+                walkover_team='team2'
+            )
+
 
 class StandingsCalculatorTest(TestCase):
     def setUp(self):

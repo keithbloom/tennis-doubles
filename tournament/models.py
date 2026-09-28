@@ -115,6 +115,12 @@ class Match(models.Model):
         ('team2', 'Team 2 retired'),
     ]
 
+    WALKOVER_CHOICES = [
+        (None, 'No walkover'),
+        ('team1', 'Team 1 gave a walkover'),
+        ('team2', 'Team 2 gave a walkover'),
+    ]
+
     tournament = models.ForeignKey(
         Tournament,
         related_name="matches",
@@ -140,6 +146,19 @@ class Match(models.Model):
         blank=True,
         help_text="Indicates which team retired from the match due to injury"
     )
+    walkover_team = models.CharField(
+        max_length=5,
+        choices=WALKOVER_CHOICES,
+        null=True,
+        blank=True,
+        help_text="Indicates which team pulled out before the match was played. "
+                  "The team giving the walkover scores no points."
+    )
+
+    @property
+    def conceding_team(self):
+        """The team position ('team1'/'team2') that retired or gave a walkover, if any"""
+        return self.retired_team or self.walkover_team
 
     def clean(self):
         if self.team1.tournament_group != self.team2.tournament_group:
@@ -155,8 +174,11 @@ class Match(models.Model):
             if self.tournament.end_date and self.date_played > self.tournament.end_date:
                 raise ValidationError("Match cannot be played after tournament end date")
 
-        # Skip score validation for matches with retirement
-        if self.retired_team:
+        if self.retired_team and self.walkover_team:
+            raise ValidationError("A match cannot be both a retirement and a walkover")
+
+        # Skip score validation for matches with a retirement or walkover
+        if self.conceding_team:
             return
 
         sets = [(self.set1_team1, self.set1_team2), (self.set2_team1, self.set2_team2)]
@@ -180,6 +202,12 @@ class Match(models.Model):
         return f"{self.team1} vs {self.team2} ({self.tournament})"
 
     def get_score(self):
+        # Handle walkover matches - the team that pulled out gets no points
+        if self.walkover_team == 'team1':
+            return "0-4"  # team2 wins (team1 gave walkover)
+        elif self.walkover_team == 'team2':
+            return "4-0"  # team1 wins (team2 gave walkover)
+
         # Handle retirement matches - the non-retired team wins
         if self.retired_team == 'team1':
             return "1-4"  # team2 wins (team1 retired)

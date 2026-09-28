@@ -66,7 +66,7 @@ class MatchAdminForm(forms.ModelForm):
         model = Match
         fields = ['tournament', 'team1', 'team2', 'set1_team1', 'set1_team2',
                  'set2_team1', 'set2_team2', 'set3_team1', 'set3_team2',
-                 'date_played', 'retired_team']
+                 'date_played', 'retired_team', 'walkover_team']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -93,8 +93,8 @@ class MatchAdminForm(forms.ModelForm):
 @admin.register(Match)
 class MatchAdmin(admin.ModelAdmin):
     form = MatchAdminForm
-    list_display = ('__str__', 'tournament', 'date_played', 'get_score', 'retired_team')
-    list_filter = ('tournament', 'team1__tournament_group', 'date_played', 'retired_team')
+    list_display = ('__str__', 'tournament', 'date_played', 'get_score', 'retired_team', 'walkover_team')
+    list_filter = ('tournament', 'team1__tournament_group', 'date_played', 'retired_team', 'walkover_team')
 
     class Media:
         js = ('js/match_admin.js',)

@@ -13,6 +13,8 @@
                     {{ match.team1_name }}
                     {% if match.retired_team == 'team1' %}
                         <span class="text-xs text-red-600 font-semibold ml-2">(Retired)</span>
+                    {% elif match.walkover_team == 'team1' %}
+                        <span class="text-xs text-red-600 font-semibold ml-2">(Walkover)</span>
                     {% endif %}
                 </div>
             </td>
@@ -38,6 +40,8 @@
                     {{ match.team2_name }}
                     {% if match.retired_team == 'team2' %}
                         <span class="text-xs text-red-600 font-semibold ml-2">(Retired)</span>
+                    {% elif match.walkover_team == 'team2' %}
+                        <span class="text-xs text-red-600 font-semibold ml-2">(Walkover)</span>
                     {% endif %}
                 </div>
             </td>

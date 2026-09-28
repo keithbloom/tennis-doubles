@@ -239,3 +239,56 @@ class TournamentIntegrationTest(TransactionTestCase):
         # Team1 should be first with 8 points
         self.assertEqual(standings[0]['team'], team1)
         self.assertEqual(standings[0]['total_points'], 8)
+    def test_walkover_integration_flow(self):
+        """Test walkover display, winner and standings (pulled-out team gets 0 points)"""
+        Tournament.objects.filter(status='ONGOING').delete()
+
+        tournament = Tournament.objects.create(
+            name="Walkover Test Tournament",
+            start_date=date.today(),
+            status="ONGOING"
+        )
+
+        group = Group.objects.create(name="Walkover Group")
+        group2 = Group.objects.create(name="Walkover Group 2")
+        tg = TournamentGroup.objects.create(tournament=tournament, group=group)
+        TournamentGroup.objects.create(tournament=tournament, group=group2)
+
+        players = [
+            Player.objects.create(first_name=f"Player{i+1}", last_name=f"Last{i+1}")
+            for i in range(4)
+        ]
+        team1 = Team.objects.create(
+            player1=players[0], player2=players[1],
+            tournament_group=tg, rank=1
+        )
+        team2 = Team.objects.create(
+            player1=players[2], player2=players[3],
+            tournament_group=tg, rank=2
+        )
+
+        # team2 pulled out, so team1 wins by walkover
+        Match.objects.create(
+            tournament=tournament,
+            team1=team1, team2=team2,
+            set1_team1=0, set1_team2=0,
+            set2_team1=0, set2_team2=0,
+            walkover_team='team2'
+        )
+
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "(Walkover)")
+        self.assertNotContains(response, "(Retired)")
+
+        group_data = response.context['group_data'][0]
+        match_data = next(m for m in group_data['matches'] if m['walkover_team'] == 'team2')
+        self.assertEqual(match_data['match_winner'], 'team1')
+        self.assertEqual(match_data['sets_won_team1'], 2)
+        self.assertEqual(match_data['sets_won_team2'], 0)
+
+        standings = group_data['standings']
+        self.assertEqual(standings[0]['team'], team1)
+        self.assertEqual(standings[0]['total_points'], 4)
+        self.assertEqual(standings[1]['team'], team2)
+        self.assertEqual(standings[1]['total_points'], 0)

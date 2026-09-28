@@ -57,11 +57,11 @@ class MatchResultService:
 
     def _calculate_sets_won(self, sets: List[tuple], match: Match = None) -> Dict[str, int]:
         """Calculate sets won by each team"""
-        # Handle retirement matches - the non-retired team gets 2 sets
-        if match and match.retired_team == 'team1':
-            return {"team1": 0, "team2": 2}  # team2 wins (team1 retired)
-        elif match and match.retired_team == 'team2':
-            return {"team1": 2, "team2": 0}  # team1 wins (team2 retired)
+        # Handle retirement/walkover matches - the other team gets 2 sets
+        if match and match.conceding_team == 'team1':
+            return {"team1": 0, "team2": 2}  # team2 wins (team1 retired/gave walkover)
+        elif match and match.conceding_team == 'team2':
+            return {"team1": 2, "team2": 0}  # team1 wins (team2 retired/gave walkover)
 
         team1_sets = sum(1 for s in sets if s[0] > s[1])
         team2_sets = sum(1 for s in sets if s[1] > s[0])
@@ -71,11 +71,11 @@ class MatchResultService:
         self, sets_won: Dict[str, int], match: Match
     ) -> Optional[Team]:
         """Determine match winner"""
-        # Handle retirement matches - the non-retired team wins
-        if match.retired_team == 'team1':
-            return match.team2  # team2 wins because team1 retired
-        elif match.retired_team == 'team2':
-            return match.team1  # team1 wins because team2 retired
+        # Handle retirement/walkover matches - the other team wins
+        if match.conceding_team == 'team1':
+            return match.team2  # team2 wins because team1 retired/gave walkover
+        elif match.conceding_team == 'team2':
+            return match.team1  # team1 wins because team2 retired/gave walkover
 
         if sets_won["team1"] > sets_won["team2"]:
             return match.team1
@@ -85,6 +85,12 @@ class MatchResultService:
 
     def _calculate_points(self, sets_won: Dict[str, int], match: Match = None) -> Dict[str, int]:
         """Calculate points for each team"""
+        # Handle walkover matches - the team that pulled out gets no points
+        if match and match.walkover_team == 'team1':
+            return {"team1": 0, "team2": 4}  # team2 wins (team1 gave walkover)
+        elif match and match.walkover_team == 'team2':
+            return {"team1": 4, "team2": 0}  # team1 wins (team2 gave walkover)
+
         # Handle retirement matches - the non-retired team gets win points
         if match and match.retired_team == 'team1':
             return {"team1": 1, "team2": 4}  # team2 wins (team1 retired)
@@ -290,6 +296,11 @@ class TournamentGridBuilder:
         self, tournament_group: TournamentGroup, tournament: Tournament
     ):
         """Get matches with annotations for display"""
+        # A team concedes a match by retiring or by giving a walkover
+        team1_conceded = Q(retired_team="team1") | Q(walkover_team="team1")
+        team2_conceded = Q(retired_team="team2") | Q(walkover_team="team2")
+        conceded = Q(retired_team__isnull=False) | Q(walkover_team__isnull=False)
+
         return (
             Match.objects.filter(
                 tournament=tournament, team1__tournament_group=tournament_group
@@ -309,8 +320,8 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 set1_winner=Case(
-                    # For retirement matches, no set winners (avoid highlighting scores)
-                    When(retired_team__isnull=False, then=Value("none")),
+                    # For retirement/walkover matches, no set winners (avoid highlighting scores)
+                    When(conceded, then=Value("none")),
                     # Normal set winner logic
                     When(set1_team1__gt=F("set1_team2"), then=Value("team1")),
                     When(set1_team2__gt=F("set1_team1"), then=Value("team2")),
@@ -318,8 +329,8 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 set2_winner=Case(
-                    # For retirement matches, no set winners (avoid highlighting scores)
-                    When(retired_team__isnull=False, then=Value("none")),
+                    # For retirement/walkover matches, no set winners (avoid highlighting scores)
+                    When(conceded, then=Value("none")),
                     # Normal set winner logic
                     When(set2_team1__gt=F("set2_team2"), then=Value("team1")),
                     When(set2_team2__gt=F("set2_team1"), then=Value("team2")),
@@ -327,8 +338,8 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 set3_winner=Case(
-                    # For retirement matches, no set winners (avoid highlighting scores)
-                    When(retired_team__isnull=False, then=Value("none")),
+                    # For retirement/walkover matches, no set winners (avoid highlighting scores)
+                    When(conceded, then=Value("none")),
                     # Normal set winner logic
                     When(set3_team1__gt=F("set3_team2"), then=Value("team1")),
                     When(set3_team2__gt=F("set3_team1"), then=Value("team2")),
@@ -337,9 +348,9 @@ class TournamentGridBuilder:
                     output_field=CharField(),
                 ),
                 sets_won_team1=Case(
-                    # For retirement matches, winner gets 2 sets, loser gets 0
-                    When(retired_team="team2", then=2),  # team2 retired, team1 wins
-                    When(retired_team="team1", then=0),  # team1 retired, team1 loses
+                    # For retirement/walkover matches, winner gets 2 sets, loser gets 0
+                    When(team2_conceded, then=2),  # team2 conceded, team1 wins
+                    When(team1_conceded, then=0),  # team1 conceded, team1 loses
                     # Normal set counting logic
                     default=Case(
                         When(set1_team1__gt=F("set1_team2"), then=1),
@@ -359,9 +370,9 @@ class TournamentGridBuilder:
                     output_field=IntegerField(),
                 ),
                 sets_won_team2=Case(
-                    # For retirement matches, winner gets 2 sets, loser gets 0
-                    When(retired_team="team1", then=2),  # team1 retired, team2 wins
-                    When(retired_team="team2", then=0),  # team2 retired, team2 loses
+                    # For retirement/walkover matches, winner gets 2 sets, loser gets 0
+                    When(team1_conceded, then=2),  # team1 conceded, team2 wins
+                    When(team2_conceded, then=0),  # team2 conceded, team2 loses
                     # Normal set counting logic
                     default=Case(
                         When(set1_team2__gt=F("set1_team1"), then=1),
@@ -383,9 +394,9 @@ class TournamentGridBuilder:
             )
             .annotate(
                 match_winner=Case(
-                    # Handle retirement - the non-retired team wins
-                    When(retired_team="team1", then=Value("team2")),  # team1 retired, team2 wins
-                    When(retired_team="team2", then=Value("team1")),  # team2 retired, team1 wins
+                    # Handle retirement/walkover - the other team wins
+                    When(team1_conceded, then=Value("team2")),  # team1 conceded, team2 wins
+                    When(team2_conceded, then=Value("team1")),  # team2 conceded, team1 wins
                     # Normal match logic based on sets
                     When(sets_won_team1__gt=F("sets_won_team2"), then=Value("team1")),
                     When(sets_won_team2__gt=F("sets_won_team1"), then=Value("team2")),
@@ -411,5 +422,6 @@ class TournamentGridBuilder:
                 "sets_won_team1",
                 "sets_won_team2",
                 "retired_team",
+                "walkover_team",
             )
         )
